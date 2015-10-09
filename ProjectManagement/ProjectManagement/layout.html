@@ -1,0 +1,63 @@
+﻿<div ng-controller="ProjectController">
+
+    <span ng-click="AddProjectDiv()" class="btnGreen">
+        Add Project
+    </span>
+
+    <div class="divList">
+        <p class="divHead">Project List</p>
+        <table cellpadding="12">
+            <tr>
+                <td><b>ID</b></td>
+                <td><b>Name</b></td>
+                <td><b>Code</b></td>
+                <td><b>Actions</b></td>
+            </tr>
+            <tr ng-repeat="project in projects">
+                <td>
+                    {{project.projectId}}
+                </td>
+                <td>
+                    {{project.projectName}}
+                </td>
+                <td>
+                    {{project.projectCode}}
+                </td>              
+                <td>
+                    <span ng-click="editProject(project)" class="btnGreen">Edit</span>
+                    <span ng-click="deleteProject(project)" class="btnRed">Delete</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-show="divProject">
+        <p class="divHead">{{Action}} Project</p>
+        <table>
+            <tr>
+                <td><b>Id</b></td>
+                <td>
+                    <input type="text" disabled="disabled" ng-model="projectId" />
+                </td>
+            </tr>
+            <tr>
+                <td><b>Name</b></td>
+                <td>
+                    <input type="text" ng-model="projectName" />
+                </td>
+            </tr>
+            <tr>
+                <td><b>Code</b></td>
+                <td>
+                    <input type="text" ng-model="projectCode" />
+                </td>
+            </tr>
+           
+            <tr>
+                <td colspan="2">
+                    <input type="button" class="btnGreen" value="Save" ng-click="AddUpdateProject()" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

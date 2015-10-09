@@ -1,0 +1,11 @@
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.BL.dll
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.BL.pdb
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.DAL.dll
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.Model.dll
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.SPHelper.dll
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.DAL.pdb
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.Model.pdb
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\bin\Debug\ProjectManagement.SPHelper.pdb
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\obj\Debug\ProjectManagement.BL.csprojResolveAssemblyReference.cache
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\obj\Debug\ProjectManagement.BL.dll
+c:\users\kanjani\documents\visual studio 2015\Projects\ProjectManagement\ProjectManagement.BL\obj\Debug\ProjectManagement.BL.pdb
