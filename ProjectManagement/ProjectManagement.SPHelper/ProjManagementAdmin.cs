@@ -15,6 +15,7 @@ namespace ProjectManagement.SPHelper
 
         #region Stored Procedure Constants
         private const string PROC_GETALLPROJECTS = "dbo.GetAllProjects";
+        private const string PROC_GETALLLOCATIONS = "dbo.GetAllLocations";
 
         #endregion
 
@@ -29,6 +30,11 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_PROJECT_CODE= "@project_code";
         private const string PARAM_PROJECT_LEAD_NAME = "@project_lead";
 
+        private const string PARAM_LOCATION_NAME = "@location_name";
+        private const string PARAM_LOCATION_CHANGEDBY = "@changed_by";
+        private const string PARAM_LOCATION_CREATEDDATE = "@changed_by";
+        private const string PARAM_LOCATION_CHANGEDDATE = "@changed_date";
+        #endregion
 
         public static SqlDataReader GetAllProjects(out int retValue)
         {
@@ -59,7 +65,36 @@ namespace ProjectManagement.SPHelper
             sqlParms[0].Value = -1;
             return sqlParms;
         }
-        #endregion
+
+        public static SqlDataReader GetAllLocations(out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms= GetAllLocationsParams();
+            dr = ExecuteReader(PROC_GETALLLOCATIONS, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetAllLocationsParams()
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETALLLOCATIONS);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETALLLOCATIONS, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            return sqlParms;
+        }
 
         static ProjManagementAdmin()
         {
