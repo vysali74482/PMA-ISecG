@@ -53,6 +53,7 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_USER_EMAIL = "@user_email";
         private const string PARAM_ROLE_ID = "@role_id";
         private const string PARAM_PASSWORD = "@password";
+        private const string PARAM_USER_IS_ACTIVE = "@is_active";
 
 		#endregion
 
@@ -321,5 +322,150 @@ namespace ProjectManagement.SPHelper
             sqlParms[0].Value = -1;
             return sqlParms;
         }
+
+        private const string PROC_GETUSERBYID = "dbo.GetUserById";
+        private const string PROC_ADDNEWUSER = "dbo.AddNewUser";
+        private const string PROC_SOFTDELETEUSER = "dbo.SoftDeleteUser";
+        private const string PROC_UPDATEUSER = "dbo.UpdateUser";
+        #region GetUserById
+        public static SqlDataReader GetUserById(int userId, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetUserByIdParams(userId);
+            dr = ExecuteReader(PROC_GETUSERBYID, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetUserByIdParams(int userId)
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETUSERBYID);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_USER_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETUSERBYID, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = userId;
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+        #region AddNewUser
+        public static int AddNewUser(UserInfo user, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetAddUserParams(user);
+            return ExecuteNonQuery(PROC_ADDNEWUSER, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetAddUserParams(UserInfo user)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_ADDNEWUSER);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int),
+                                new SqlParameter(PARAM_USER_NAME, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_USER_EMAIL, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
+
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_ADDNEWUSER, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            sqlParms[1].Value = user.UserName;
+            sqlParms[2].Value = user.UserEmail;
+            sqlParms[3].Value = "sanyam";
+
+            return sqlParms;
+        }
+        #endregion
+        #region SoftDeleteUser
+
+        public static int SoftDeleteUser(int userId, bool isOpen, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetSoftDeleteUserParams(userId, isOpen);
+            return ExecuteNonQuery(PROC_SOFTDELETEUSER, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetSoftDeleteUserParams(int userId, bool isOpen)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_SOFTDELETEUSER);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_USER_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_USER_IS_ACTIVE,SqlDbType.Bit),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[2].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_SOFTDELETEUSER, sqlParms);
+            }
+
+            //Assigning values to parameter
+
+            sqlParms[0].Value = userId;
+            sqlParms[1].Value = Convert.ToByte(isOpen);
+            sqlParms[2].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+        #region UpdateUsers
+
+        public static int UpdateUser(UserInfo user, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetUpdateUserParams(user);
+            return ExecuteNonQuery(PROC_UPDATEUSER, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetUpdateUserParams(UserInfo user)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_UPDATEUSER);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_USER_ID,SqlDbType.Int),
+                                new SqlParameter(PARAM_USER_NAME, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_USER_EMAIL, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[5].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_UPDATEUSER, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = user.UserId;
+            sqlParms[1].Value = user.UserName;
+            sqlParms[2].Value = user.UserEmail;
+            sqlParms[4].Value = "sanyam";
+            sqlParms[5].Value = -1;
+            return sqlParms;
+        }
+        #endregion
     }
 }

@@ -18,6 +18,8 @@ namespace ProjectManagement.Model
 
         public char Password { get; set; }
 
+        public Boolean IsActive { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime ChangedDate { get; set; }

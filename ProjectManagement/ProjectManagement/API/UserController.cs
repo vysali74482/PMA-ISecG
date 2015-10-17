@@ -6,12 +6,13 @@ using System.Net.Http;
 using System.Web.Http;
 using ProjectManagement.Model;
 using ProjectManagement.BL;
+using System.Web.Http.Results;
 
 namespace ProjectManagement.API
 {
     public class UserController : ApiController
     {
-        public IEnumerable<UserInfo> Get()
+        public JsonResult<IEnumerable<UserInfo>> Get()
         {
 
             UserInfo[] ListOfUsers = UserBl.GetAllUsers();
@@ -20,8 +21,24 @@ namespace ProjectManagement.API
                            select c;
 
 
-            return users.ToList();
+            return Json(users);
 
         }
+        public HttpResponseMessage Post(UserInfo user)
+        {
+
+            try
+            {
+
+                UserBl.AddNewUser(user);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+        }
+        
     }
 }
