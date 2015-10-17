@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectLeadInfo.cs" />
+	<Compile Include="UserInfo.cs" />
+	<Compile Include="LocationInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

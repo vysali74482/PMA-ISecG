@@ -1,4 +1,4 @@
-﻿using ProjectManagement.Model;
+using ProjectManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,8 +16,9 @@ namespace ProjectManagement.SPHelper
 
         #region Stored Procedure Constants
         private const string PROC_GETALLPROJECTS = "dbo.GetAllProjects";
-
         private const string PROC_GETALLLOCATIONS = "dbo.GetAllLocations";
+		private const string PROC_GETALLUSERS = "dbo.GetAllUsers";
+		
         private const string PROC_ADDNEWPROJECT = "dbo.AddNewProject";
         private const string PROC_GETPROJECTBYID = "dbo.GetProjectById";
         private const string PROC_SOFTDELETEPROJECT = "dbo.SoftDeleteProject";
@@ -39,12 +40,21 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_PROJECT_LEAD_NAME = "@project_lead_name";
         private const string PARAM_PROJECT_LEAD_ID = "@project_lead_id";
 
-
         private const string PARAM_LOCATION_NAME = "@location_name";
         private const string PARAM_LOCATION_CHANGEDBY = "@changed_by";
         private const string PARAM_LOCATION_CREATEDDATE = "@changed_by";
         private const string PARAM_LOCATION_CHANGEDDATE = "@changed_date";
-        #endregion
+        
+		private const string PARAM_USER_CHANGEDBY = "@changed_by";
+        private const string PARAM_USER_CREATEDDATE = "@changed_by";
+        private const string PARAM_USER_CHANGEDDATE = "@changed_date";
+        private const string PARAM_USER_NAME = "@user_name";
+        private const string PARAM_USER_ID = "@user_id";
+        private const string PARAM_USER_EMAIL = "@user_email";
+        private const string PARAM_ROLE_ID = "@role_id";
+        private const string PARAM_PASSWORD = "@password";
+
+		#endregion
 
         public static SqlDataReader GetAllProjects(out int retValue)
         {
@@ -281,6 +291,35 @@ namespace ProjectManagement.SPHelper
             return SQLHelper.ExecuteNonQuery(PROJMGMT_CONN_STRING, CommandType.StoredProcedure, spName, out retValue, parms);
         }
         #endregion
+		
+		public static SqlDataReader GetAllUsers(out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetAllUsersParams();
+            dr = ExecuteReader(PROC_GETALLUSERS, parms, out retValue);
 
+            return dr;
+        }
+		
+		private static SqlParameter[] GetAllUsersParams()
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETALLUSERS);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                               
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETALLUSERS, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            return sqlParms;
+        }
     }
 }

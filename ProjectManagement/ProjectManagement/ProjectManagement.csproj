@@ -174,8 +174,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\ProjectController.cs" />
+    <Compile Include="API\UserController.cs" />
     <Compile Include="API\ProjectLeadController.cs" />
     <Compile Include="API\SelectedProjectController.cs" />
+	<Compile Include="API\LocationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
