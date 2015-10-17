@@ -15,7 +15,7 @@ namespace ProjectManagement.API
         {
 
             UserInfo[] ListOfUsers = UserBl.GetAllUsers();
-
+            //testing push
             var users = from c in ListOfUsers
                            select c;
 
