@@ -378,7 +378,7 @@ namespace ProjectManagement.SPHelper
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int),
                                 new SqlParameter(PARAM_USER_NAME, SqlDbType.NVarChar, 100),
                                 new SqlParameter(PARAM_USER_EMAIL, SqlDbType.NVarChar, 100),
-                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
+                               // new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
 
                             };
 
@@ -390,7 +390,7 @@ namespace ProjectManagement.SPHelper
             sqlParms[0].Value = -1;
             sqlParms[1].Value = user.UserName;
             sqlParms[2].Value = user.UserEmail;
-            sqlParms[3].Value = "sanyam";
+            //sqlParms[3].Value = "sanyam";
 
             return sqlParms;
         }
