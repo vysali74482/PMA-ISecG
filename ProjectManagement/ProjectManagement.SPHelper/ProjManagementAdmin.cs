@@ -378,7 +378,7 @@ namespace ProjectManagement.SPHelper
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int),
                                 new SqlParameter(PARAM_USER_NAME, SqlDbType.NVarChar, 100),
                                 new SqlParameter(PARAM_USER_EMAIL, SqlDbType.NVarChar, 100),
-                               // new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
+                               new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
 
                             };
 
@@ -390,7 +390,7 @@ namespace ProjectManagement.SPHelper
             sqlParms[0].Value = -1;
             sqlParms[1].Value = user.UserName;
             sqlParms[2].Value = user.UserEmail;
-            //sqlParms[3].Value = "sanyam";
+            sqlParms[3].Value = "sanyam";
 
             return sqlParms;
         }
@@ -449,12 +449,12 @@ namespace ProjectManagement.SPHelper
                                 new SqlParameter(PARAM_USER_ID,SqlDbType.Int),
                                 new SqlParameter(PARAM_USER_NAME, SqlDbType.NVarChar, 100),
                                 new SqlParameter(PARAM_USER_EMAIL, SqlDbType.NVarChar, 100),
-                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100),
+                                //new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100),
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int)
 
                             };
 
-                sqlParms[5].Direction = ParameterDirection.ReturnValue;
+                sqlParms[3].Direction = ParameterDirection.ReturnValue;
                 SQLHelper.CacheParameters(PROC_UPDATEUSER, sqlParms);
             }
 
@@ -462,8 +462,8 @@ namespace ProjectManagement.SPHelper
             sqlParms[0].Value = user.UserId;
             sqlParms[1].Value = user.UserName;
             sqlParms[2].Value = user.UserEmail;
-            sqlParms[4].Value = "sanyam";
-            sqlParms[5].Value = -1;
+            //sqlParms[4].Value = "sanyam";
+            sqlParms[3].Value = -1;
             return sqlParms;
         }
         #endregion
