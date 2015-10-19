@@ -174,10 +174,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\ProjectController.cs" />
+    <Compile Include="API\SelectedLocationController.cs" />
     <Compile Include="API\UserController.cs" />
     <Compile Include="API\ProjectLeadController.cs" />
     <Compile Include="API\SelectedProjectController.cs" />
-	<Compile Include="API\LocationController.cs" />
+    <Compile Include="API\LocationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -1053,9 +1054,12 @@
     <Content Include="UI\js\controllers.js" />
     <Content Include="UI\js\directives.js" />
     <Content Include="UI\js\services.js" />
+    <Content Include="UI\Templates\add-new-location.html" />
     <Content Include="UI\Templates\add-new-project.html" />
+    <Content Include="UI\Templates\details-location.html" />
     <Content Include="UI\Templates\details-project.html" />
     <Content Include="UI\Templates\edit-project.html" />
+    <Content Include="UI\Templates\locations.html" />
     <Content Include="UI\Templates\projects.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

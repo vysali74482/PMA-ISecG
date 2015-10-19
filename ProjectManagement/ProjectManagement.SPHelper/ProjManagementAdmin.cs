@@ -48,7 +48,7 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_LOCATION_ID = "@location_id";
         private const string PARAM_LOCATION_NAME = "@location_name";
         private const string PARAM_LOCATION_CHANGEDBY = "@changed_by";
-        private const string PARAM_LOCATION_CREATEDDATE = "@changed_by";
+        private const string PARAM_LOCATION_CREATEDDATE = "@created_date";
         private const string PARAM_LOCATION_CHANGEDDATE = "@changed_date";
         private const string PARAM_LOCATION_IS_ACTIVE = "@is_active";
 
