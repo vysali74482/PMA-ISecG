@@ -17,12 +17,17 @@ namespace ProjectManagement.SPHelper
         #region Stored Procedure Constants
         private const string PROC_GETALLPROJECTS = "dbo.GetAllProjects";
         private const string PROC_GETALLLOCATIONS = "dbo.GetAllLocations";
-		private const string PROC_GETALLUSERS = "dbo.GetAllUsers";
-		
+        private const string PROC_GETALLUSERS = "dbo.GetAllUsers";
+
         private const string PROC_ADDNEWPROJECT = "dbo.AddNewProject";
         private const string PROC_GETPROJECTBYID = "dbo.GetProjectById";
         private const string PROC_SOFTDELETEPROJECT = "dbo.SoftDeleteProject";
         private const string PROC_UPDATEPROJECT = "dbo.UpdateProject";
+
+        private const string PROC_ADDNEWLOCATION = "dbo.AddNewLocation";
+        private const string PROC_GETLOCATIONBYID = "dbo.GetLocationById";
+        private const string PROC_SOFTDELETELOCATION = "dbo.SoftDeleteLocation";
+        private const string PROC_UPDATELOCATION = "dbo.UpdateLocation";
 
         #endregion
 
@@ -40,12 +45,14 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_PROJECT_LEAD_NAME = "@project_lead_name";
         private const string PARAM_PROJECT_LEAD_ID = "@project_lead_id";
 
+        private const string PARAM_LOCATION_ID = "@location_id";
         private const string PARAM_LOCATION_NAME = "@location_name";
         private const string PARAM_LOCATION_CHANGEDBY = "@changed_by";
         private const string PARAM_LOCATION_CREATEDDATE = "@changed_by";
         private const string PARAM_LOCATION_CHANGEDDATE = "@changed_date";
-        
-		private const string PARAM_USER_CHANGEDBY = "@changed_by";
+        private const string PARAM_LOCATION_IS_ACTIVE = "@is_active";
+
+        private const string PARAM_USER_CHANGEDBY = "@changed_by";
         private const string PARAM_USER_CREATEDDATE = "@changed_by";
         private const string PARAM_USER_CHANGEDDATE = "@changed_date";
         private const string PARAM_USER_NAME = "@user_name";
@@ -55,7 +62,7 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_PASSWORD = "@password";
         private const string PARAM_USER_IS_ACTIVE = "@is_active";
 
-		#endregion
+        #endregion
 
         public static SqlDataReader GetAllProjects(out int retValue)
         {
@@ -75,7 +82,7 @@ namespace ProjectManagement.SPHelper
                 sqlParms = new SqlParameter[]
                             {
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int)
-                               
+
                             };
 
                 sqlParms[0].Direction = ParameterDirection.ReturnValue;
@@ -91,7 +98,7 @@ namespace ProjectManagement.SPHelper
         {
             retValue = -1;
             SqlDataReader dr = null;
-            SqlParameter[] parms= GetAllLocationsParams();
+            SqlParameter[] parms = GetAllLocationsParams();
             dr = ExecuteReader(PROC_GETALLLOCATIONS, parms, out retValue);
 
             return dr;
@@ -191,14 +198,14 @@ namespace ProjectManagement.SPHelper
 
         #region SoftDeleteProject
 
-        public static int SoftDeleteProject(int projectId,bool isOpen, out int retValue)
+        public static int SoftDeleteProject(int projectId, bool isOpen, out int retValue)
         {
             retValue = -1;
-            SqlParameter[] parms = GetSoftDeleteProjectParams(projectId,isOpen);
+            SqlParameter[] parms = GetSoftDeleteProjectParams(projectId, isOpen);
             return ExecuteNonQuery(PROC_SOFTDELETEPROJECT, parms, out retValue);
         }
 
-        private static SqlParameter[] GetSoftDeleteProjectParams(int projectId,bool isOpen)
+        private static SqlParameter[] GetSoftDeleteProjectParams(int projectId, bool isOpen)
         {
             SqlParameter[] sqlParms = new SqlParameter[100];
             sqlParms = SQLHelper.GetCachedParameters(PROC_SOFTDELETEPROJECT);
@@ -292,8 +299,8 @@ namespace ProjectManagement.SPHelper
             return SQLHelper.ExecuteNonQuery(PROJMGMT_CONN_STRING, CommandType.StoredProcedure, spName, out retValue, parms);
         }
         #endregion
-		
-		public static SqlDataReader GetAllUsers(out int retValue)
+
+        public static SqlDataReader GetAllUsers(out int retValue)
         {
             retValue = -1;
             SqlDataReader dr = null;
@@ -302,8 +309,8 @@ namespace ProjectManagement.SPHelper
 
             return dr;
         }
-		
-		private static SqlParameter[] GetAllUsersParams()
+
+        private static SqlParameter[] GetAllUsersParams()
         {
             SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETALLUSERS);
             if (sqlParms == null)
@@ -311,7 +318,7 @@ namespace ProjectManagement.SPHelper
                 sqlParms = new SqlParameter[]
                             {
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int)
-                               
+
                             };
 
                 sqlParms[0].Direction = ParameterDirection.ReturnValue;
@@ -467,5 +474,145 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
         #endregion
+
+        #region AddNewLocation
+        public static int AddNewLocation(LocationInfo location, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetAddLocationParams(location);
+            return ExecuteNonQuery(PROC_ADDNEWLOCATION, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetAddLocationParams(LocationInfo location)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_ADDNEWLOCATION);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int),
+                                new SqlParameter(PARAM_LOCATION_NAME, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_ADDNEWLOCATION, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            sqlParms[1].Value = location.LocationName;
+            sqlParms[4].Value = "anjani";
+
+            return sqlParms;
+        }
+        #endregion
+
+        #region GetLocationById
+        public static SqlDataReader GetLocationById(int locationId, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetLocationByIdParams(locationId);
+            dr = ExecuteReader(PROC_GETLOCATIONBYID, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetLocationByIdParams(int locationId)
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETLOCATIONBYID);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_LOCATION_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETLOCATIONBYID, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = locationId;
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
+        #region SoftDeleteLocation
+
+        public static int SoftDeleteLocation(int locationId, bool isOpen, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetSoftDeleteLocationParams(locationId, isOpen);
+            return ExecuteNonQuery(PROC_SOFTDELETELOCATION, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetSoftDeleteLocationParams(int locationId, bool isOpen)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_SOFTDELETELOCATION);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_LOCATION_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_LOCATION_IS_ACTIVE,SqlDbType.Bit),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[2].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_SOFTDELETELOCATION, sqlParms);
+            }
+
+            //Assigning values to parameter
+
+            sqlParms[0].Value = locationId;
+            sqlParms[1].Value = Convert.ToByte(isOpen);
+            sqlParms[2].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
+        #region UpdateLocation
+
+        public static int UpdateLocation(LocationInfo location, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetUpdateLocationParams(location);
+            return ExecuteNonQuery(PROC_UPDATELOCATION, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetUpdateLocationParams(LocationInfo location)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_UPDATELOCATION);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_LOCATION_ID,SqlDbType.Int),
+                                new SqlParameter(PARAM_LOCATION_NAME, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[5].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_UPDATELOCATION, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = location.LocationId;
+            sqlParms[1].Value = location.LocationName;
+            sqlParms[4].Value = "anjani";
+            sqlParms[5].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
     }
 }
