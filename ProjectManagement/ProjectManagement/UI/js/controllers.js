@@ -170,3 +170,70 @@ app.controller("UserController", function ($scope, angularService) {
         $scope.userEmail = "";
     }
 });
+
+app.controller("LocationController", function ($scope, angularService) {
+    $scope.divLocation = false;
+    GetAllLocation();
+    //To Get All Records  
+    function GetAllLocation() {
+        $http.get('api/location').success(function (result, status, headers) {
+            var getData = angular.copy(result);
+        }).error(function () {
+            alert("error");
+
+        });
+        getData.then(function (loc) {
+            $scope.locations = loc.data;
+        }, function () {
+            alert('Error in getting records');
+        });
+    }
+
+    $scope.AddUpdateLocation = function () {
+        var location = {
+            Name: $scope.locationName,
+        };
+        var getAction = $scope.Action;
+
+        if (getAction == "Update") {
+            location.Id = $scope.locationId;
+            var getData = angularService.updateLoc(location);
+            getData.then(function (msg) {
+                GetAllLocation();
+                alert(msg.data);
+                $scope.divLocation = false;
+            }, function () {
+                alert('Error in updating record');
+            });
+        } else {
+            var getData = angularService.AddLoc(location);
+            getData.then(function (msg) {
+                GetAllLocation();
+                alert(msg.data);
+                $scope.divLocation = false;
+            }, function () {
+                alert('Error in adding record');
+            });
+        }
+    }
+
+    $scope.AddLocationDiv = function () {
+        ClearFields();
+        $scope.Action = "Add";
+        $scope.divLocation = true;
+    }
+
+    $scope.deleteLocation = function (location) {
+        var getData = angularService.DeleteLoc(location.locationId);
+        getData.then(function (msg) {
+            GetAllLocations();
+            alert('Location Deleted');
+        }, function () {
+            alert('Error in Deleting Record');
+        });
+    }
+
+    function ClearFields() {
+        $scope.locationName = "";
+    }
+});
