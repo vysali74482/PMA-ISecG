@@ -30,11 +30,11 @@ namespace ProjectManagement.DAL
                     user.UserName = dr["user_name"].ToString();
                     user.UserId = Convert.ToInt32(dr["user_id"]);
                     user.UserEmail = dr["user_email"].ToString();
-                    user.RoleId = Convert.ToInt32(dr["role_id"]);
-                    user.IsActive = Convert.ToBoolean(dr["is_active"]);
-                   // user.Password = Convert.ToChar(dr["password"]);
-                    user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
-                    user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
+                   // user.RoleId = Convert.ToInt32(dr["role_id"]);
+                   // user.IsActive = Convert.ToBoolean(dr["is_active"]);
+                   //user.Password = Convert.ToChar(dr["password"]);
+                  //user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
+                   //user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
                     user.ChangedBy = dr["changed_by"].ToString();
 
                     al.Add(user);
@@ -60,11 +60,11 @@ namespace ProjectManagement.DAL
                     user.UserId = Convert.ToInt32(dr["user_id"]);
                     user.UserName = dr["user_name"].ToString();
                     user.UserEmail = dr["user_email"].ToString();
-                    user.RoleId = Convert.ToInt32(dr["role_id"]);
-                    user.IsActive = Convert.ToBoolean(dr["is_active"]);
-                    user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
-                    user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    user.ChangedBy = dr["changed_by"].ToString();
+                   // user.RoleId = Convert.ToInt32(dr["role_id"]);
+                 //  user.IsActive = Convert.ToBoolean(dr["is_active"]);
+                 //  user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
+                //   user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
+                  user.ChangedBy = dr["changed_by"].ToString();
 
                 }
                 //dr.Close();

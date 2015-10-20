@@ -10,7 +10,7 @@
                                 <label class="control-label" for="form-field-1">User Name</label>
 
                                 <div class="controls">
-                                    <input type="text" id="form-field-1" name="Name" ng-model="userToAddData.UserName" />
+                                    <input type="text" id="form-field-1" name="Name" ng-model="userToAddData.UserName" required/>
 
                                 </div>
                             </div>
@@ -19,10 +19,10 @@
                                 <label class="control-label" for="form-field-4">User Email</label>
 
                                 <div class="controls">
-                                    <input type="text" id="form-field-4" name="UserName" ng-model="userToAddData.UserEmail" />
+                                    <input type="email" id="form-field-4" name="UserEmail" pattern="[a-zA-Z0-9.!#$%&’*+/ =?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*" ng-model="userToAddData.UserEmail" required />
 
-                                </div>
-                            </div>
+                                </div>                                                              
+                            </div>                                                                   
                             
 
                             <div class="form-actions">

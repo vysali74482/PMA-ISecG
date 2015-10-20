@@ -419,8 +419,10 @@ app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location'
           var x;
           var r = confirm("Are you sure you want to delete this User?");
           if (r == true) {
-              $scope.urlForDelete = 'api/SelectedUser?id=' + user.UserId;
+              
+              user.isOpen = !user.IsActive;
 
+              $scope.urlForDelete = 'api/selectedUser?id=' + user.UserId + '&isOpen=' + user.isOpen;
               $http({
                   method: 'DELETE',
                   url: $scope.urlForDelete,
