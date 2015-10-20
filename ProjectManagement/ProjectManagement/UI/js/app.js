@@ -33,7 +33,7 @@ app.config(['$routeProvider',
               controller: 'UserAddController'
           }).
           when('/user-edit/:id', {
-              templateUrl: 'UI/Templates/edit-user.html',
+              templateUrl: 'UI/Templates/edit-users.html',
               controller: 'UserEditController',
           }).
         when('/user-details/:id', {
@@ -828,19 +828,23 @@ app.controller('LocationIndexController', ['$scope', '$http', '$filter', '$locat
 app.controller('LocationDetailsController', ['$scope', '$http', '$filter', '$location', '$routeParams',
   function LocationDetailsController($scope, $http, $filter, $location, $routeParams) {
 
-
       $scope.detailsId = $routeParams.id;
       $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
+      
       $scope.getQueryForDetails = 'api/SelectedLocation?id=' + $scope.detailsId;
       $scope.locationDetailsData = {};
 
-
       $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
-          // this callback will be called asynchronously
-          // when the response is available
-          //alert("success");
           $scope.locationDetailsData = angular.copy(result);
 
+      }).error(function () {
+      });
+
+      $scope.getQueryForProjectDetails = 'api/location/FetchProjectsAtLocation/' + $scope.detailsId;
+      $scope.ProjectLocationDetailsData = {};
+     
+      $http.get($scope.getQueryForProjectDetails).success(function (result, status, headers) {
+          $scope.ProjectLocationDetailsData = angular.copy(result);
       }).error(function () {
       });
   }]);
