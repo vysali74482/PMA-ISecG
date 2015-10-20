@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ProjectManagement.SPHelper
 {
     public class ProjManagementAdmin
@@ -385,6 +386,7 @@ namespace ProjectManagement.SPHelper
                 sqlParms[0].Direction = ParameterDirection.ReturnValue;
                 SQLHelper.CacheParameters(PROC_ADDNEWUSER, sqlParms);
             }
+
 
             //Assigning values to parameter
             sqlParms[0].Value = -1;
