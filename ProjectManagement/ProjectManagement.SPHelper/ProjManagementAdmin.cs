@@ -613,6 +613,39 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
         #endregion
+        #region ProjectLocation
+        private const string PROC_GETPROJECTSATLOCATION = "dbo.GetProjectsAtLocation";
 
+        public static SqlDataReader GetProjectsAtLocation(int LocationId, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetProjectsAtLocationParams(LocationId);
+            dr = ExecuteReader(PROC_GETPROJECTSATLOCATION, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetProjectsAtLocationParams(int locationId)
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETPROJECTSATLOCATION);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_LOCATION_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETPROJECTSATLOCATION, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = locationId;
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+        #endregion
     }
 }
