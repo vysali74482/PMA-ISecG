@@ -6,13 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace ProjectManagement.API
 {
     public class LocationController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<LocationInfo> Get()
+        public JsonResult<IEnumerable<LocationInfo>> Get()
         {
 
             LocationInfo[] ListOfLocations = LocationBl.GetAllLocations();
@@ -21,7 +22,7 @@ namespace ProjectManagement.API
                            select c;
 
 
-            return location.ToList();
+            return Json(location);
 
         }
 
@@ -30,20 +31,30 @@ namespace ProjectManagement.API
         {
             return "value";
         }
+        // GET api/<controller>/GetProjectsAtLocation/5
+        [HttpGet]
+        public JsonResult<IEnumerable<ProjectLocationInfo>> FetchProjectsAtLocation(int id)
+        {
 
+            ProjectLocationInfo[] ListOfProjects = ProjectLocationBl.GetProjectsAtLocation(id);
+
+            var proj = from c in ListOfProjects
+                       select c;
+            return Json(proj);
+
+        }
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post(LocationInfo location)
         {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            try
+            {
+                LocationBl.AddNewLocation(location);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
         }
     }
 }

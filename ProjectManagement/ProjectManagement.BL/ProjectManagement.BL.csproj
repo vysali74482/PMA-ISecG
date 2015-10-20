@@ -44,8 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProjectBl.cs" />
-	<Compile Include="LocationBl.cs" />
-	<Compile Include="UserBl.cs" />
+    <Compile Include="LocationBl.cs" />
+    <Compile Include="ProjectLocationBl.cs" />
+    <Compile Include="UserBl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

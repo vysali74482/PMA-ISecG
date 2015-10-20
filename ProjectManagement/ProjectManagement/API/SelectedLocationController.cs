@@ -14,7 +14,6 @@ namespace ProjectManagement.API
         public LocationInfo Get(int id)
         {
 
-
             LocationInfo loc = new LocationInfo();
             loc = LocationBl.GetLocationById(id);
             return loc;
