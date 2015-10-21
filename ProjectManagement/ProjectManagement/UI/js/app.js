@@ -48,6 +48,10 @@ app.config(['$routeProvider',
 		    templateUrl: 'UI/Templates/details-location.html',
 		    controller: 'LocationDetailsController',
 		}).
+        when('/location-add', {
+              templateUrl: 'UI/Templates/add-new-location.html',
+              controller: 'LocationAddController'
+          }).
         otherwise({
             redirectTo: '/layout'
         });
@@ -842,9 +846,115 @@ app.controller('LocationDetailsController', ['$scope', '$http', '$filter', '$loc
 
       $scope.getQueryForProjectDetails = 'api/location/FetchProjectsAtLocation/' + $scope.detailsId;
       $scope.ProjectLocationDetailsData = {};
-     
+    
+      //Pagination Code 
+
+      $scope.isBusy = true;
+      $scope.reverse = false;
+      $scope.groupedItems = [];
+      $scope.itemsPerPage = 3;
+      $scope.currentPage = 0;
+
+      $scope.range = function (start, end) {
+          var ret = [];
+          if (!end) {
+              end = start;
+              start = 0;
+          }
+          for (var i = start; i < end; i++) {
+              ret.push(i);
+          }
+          return ret;
+      };
+      $scope.prevPage = function () {
+          if ($scope.currentPage > 0) {
+              $scope.currentPage--;
+          }
+      };
+      $scope.nextPage = function () {
+          if ($scope.currentPage < $scope.pagedItems.length - 1) {
+              $scope.currentPage++;
+          }
+      };
+      $scope.setPage = function () {
+          $scope.currentPage = this.n;
+      };
+
       $http.get($scope.getQueryForProjectDetails).success(function (result, status, headers) {
-          $scope.ProjectLocationDetailsData = angular.copy(result);
+
+          $scope.isBusy = false;
+          $scope.data = angular.copy(result);
+          $scope.filteredItems = angular.copy(result);
+
+          //paging
+          $scope.pagedItems = [];
+
+          for (var i = 0; i < $scope.filteredItems.length; i++) {
+              if (i % $scope.itemsPerPage === 0) {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+              } else {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+              }
+          }
+          // $scope.ProjectLocationDetailsData = angular.copy(result);
       }).error(function () {
       });
+      // calculate page in place
+      $scope.groupToPages = function () {
+          $scope.pagedItems = [];
+
+          for (var i = 0; i < $scope.filteredItems.length; i++) {
+              if (i % $scope.itemsPerPage === 0) {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+              } else {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+              }
+          }
+      };
+      
+      // init the filtered items
+      $scope.search = function () {
+
+          $scope.filteredItems = $filter('filter')($scope.data, function (item) {
+
+              if (searchMatch(item.ProjectName, $scope.query))
+                  return true;
+
+              return false;
+          });
+          /* take care of the sorting order
+          if ($scope.sortingOrder !== '') {
+              $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
+          }*/
+          $scope.currentPage = 0;
+          // now group by pages
+          $scope.groupToPages();
+      };
+
+      var searchMatch = function (haystack, needle) {
+          if (!needle) {
+              return true;
+          }
+          return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+      };
+  
+  }]);
+app.controller('LocationAddController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+  function LocationAddController($scope, $http, $filter, $location, $routeParams) {
+      alert("hit");
+      $scope.isBusy = false;
+      $scope.addLocation = function () {
+          $scope.isBusy = true;
+          $http({
+              method: 'POST',
+              url: 'api/location',
+              data: $scope.locationToAddData
+          }).success(function (result, status, headers) {
+              alert("Location successfully added");
+              $scope.locationToAddData = {};
+          }).error(function (result, status, headers) {
+              $scope.isBusy = false;
+              alert("error");
+          });
+      }
   }]);

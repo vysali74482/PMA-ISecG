@@ -47,7 +47,8 @@ namespace ProjectManagement.SPHelper
 
         private const string PARAM_LOCATION_ID = "@location_id";
         private const string PARAM_LOCATION_NAME = "@location_name";
-        private const string PARAM_LOCATION_CHANGEDBY = "@changed_by";
+        private const string PARAM_LOCATION_CHANGEDBY_ID = "@changed_by";
+        private const string PARAM_LOCATION_CHANGEDBY_NAME = "@changed_by_name";
         private const string PARAM_LOCATION_CREATEDDATE = "@created_date";
         private const string PARAM_LOCATION_CHANGEDDATE = "@changed_date";
         private const string PARAM_LOCATION_IS_ACTIVE = "@is_active";
@@ -493,7 +494,7 @@ namespace ProjectManagement.SPHelper
                             {
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int),
                                 new SqlParameter(PARAM_LOCATION_NAME, SqlDbType.NVarChar, 100),
-                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100)
+                                new SqlParameter(PARAM_LOCATION_CHANGEDBY_ID, SqlDbType.Int, 100)
                             };
 
                 sqlParms[0].Direction = ParameterDirection.ReturnValue;
@@ -503,7 +504,7 @@ namespace ProjectManagement.SPHelper
             //Assigning values to parameter
             sqlParms[0].Value = -1;
             sqlParms[1].Value = location.LocationName;
-            sqlParms[4].Value = "anjani";
+            sqlParms[2].Value = location.ChangedById;
 
             return sqlParms;
         }
