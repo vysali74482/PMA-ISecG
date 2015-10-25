@@ -40,18 +40,6 @@ app.config(['$routeProvider',
             templateUrl: 'UI/Templates/details-user.html',
             controller: 'UserDetailsController',
         }).
-		when('/locations', {
-		    templateUrl: 'UI/Templates/locations.html',
-		    controller: 'LocationIndexController'
-		}).
-		when('/location-details/:id', {
-		    templateUrl: 'UI/Templates/details-location.html',
-		    controller: 'LocationDetailsController',
-		}).
-        when('/location-add', {
-              templateUrl: 'UI/Templates/add-new-location.html',
-              controller: 'LocationAddController'
-          }).
         otherwise({
             redirectTo: '/layout'
         });
@@ -84,8 +72,8 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
 
               req.isOpen = !req.IsActive;
 
-              $scope.urlForDelete = 'api/selectedProject?id=' + req.ProjectId + '&isOpen=' + req.isOpen;
-
+              $scope.urlForDelete = 'api/selectedProject?id=' + req.ProjectId+ '&isOpen=' + req.isOpen;
+           
 
               $http({
                   method: 'DELETE',
@@ -140,7 +128,7 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
                   $scope.isBusy = false;
                   alert("Project successfully deleted. However, you can still reactivate it.");
                   project.isActive = false;
-                  $location.path('/projects');
+                   $location.path('/projects');
                   //$scope.reqToAddData = {};
 
               })
@@ -336,7 +324,7 @@ app.controller('ProjectEditController', ['$scope', '$http', '$filter', '$locatio
           }).success(function (result, status, headers) {
               $scope.isBusy = false;
               alert("Project information successfully edited");
-              $location.path('/projects');
+               $location.path('/projects');
 
 
           })
@@ -385,8 +373,8 @@ app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location'
 
               req.isOpen = !req.IsActive;
 
-              $scope.urlForDelete = 'api/selectedUser?id=' + req.UserId + '&isOpen=' + req.isOpen;
-
+              $scope.urlForDelete = 'api/selectedUser?id=' + req.UserId+ '&isOpen=' + req.isOpen;
+           
 
               $http({
                   method: 'DELETE',
@@ -420,7 +408,7 @@ app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location'
       $scope.currentPage = 0;
 
       $scope.Edit = function (user) {
-
+          
           $location.path('/user-edit/:' + user.UserId);
 
       }
@@ -431,8 +419,10 @@ app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location'
           var x;
           var r = confirm("Are you sure you want to delete this User?");
           if (r == true) {
-              $scope.urlForDelete = 'api/SelectedUser?id=' + user.UserId;
+              
+              user.isOpen = !user.IsActive;
 
+              $scope.urlForDelete = 'api/selectedUser?id=' + user.UserId + '&isOpen=' + user.isOpen;
               $http({
                   method: 'DELETE',
                   url: $scope.urlForDelete,
@@ -441,7 +431,7 @@ app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location'
                   $scope.isBusy = false;
                   alert("User successfully deleted. However, you can still reactivate the user.");
                   user.isActive = false;
-                  $location.path('/users');
+                   $location.path('/users');
                   //$scope.reqToAddData = {};
 
               })
@@ -454,7 +444,7 @@ app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location'
           else {
 
           }
-      }
+       }
       $scope.range = function (start, end) {
           var ret = [];
           if (!end) {
@@ -575,10 +565,11 @@ app.controller('UserAddController', ['$scope', '$http', '$filter', '$location', 
 app.controller('UserEditController', ['$scope', '$http', '$filter', '$location', '$routeParams',
   function UserEditController($scope, $http, $filter, $location, $routeParams) {
 
-
+      alert("hi");
       $scope.detailsId = $routeParams.id;
       $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
       $scope.getQueryForDetails = 'api/SelectedUser?id=' + $scope.detailsId;
+      alert($scope.getQueryForDetails);
 
       $scope.userToEditData = {};
 
@@ -597,7 +588,7 @@ app.controller('UserEditController', ['$scope', '$http', '$filter', '$location',
 
       //all data
 
-      $scope.resetEditUserForm = function () {
+     $scope.resetEditUserForm = function () {
           $scope.userToEditData = angular.copy($scope.backupUserToEdit);
 
       }
@@ -611,7 +602,7 @@ app.controller('UserEditController', ['$scope', '$http', '$filter', '$location',
           }).success(function (result, status, headers) {
               $scope.isBusy = false;
               alert("User information successfully edited");
-              $location.path('/users');
+               $location.path('/users');
 
 
           })
@@ -647,314 +638,3 @@ app.controller('UserDetailsController', ['$scope', '$http', '$filter', '$locatio
 
   }]);
 
-app.controller('LocationController', ['$scope', '$http', '$filter', '$location',
-function LocationController($scope, $http, $filter, $location) {
-
-    $http({ method: 'GET', url: '/api/location' }).
-     success(function (response, status, headers, config) {
-         $scope.locations = response;
-     }).
-     error(function (data, status, headers, config) {
-         alert('error');
-     });
-}]);
-
-app.controller('LocationIndexController', ['$scope', '$http', '$filter', '$location',
-  function LocationIndexController($scope, $http, $filter, $location) {
-
-
-      $scope.OpenClose = function (req) {
-          var x;
-          var r = confirm("Are you sure you want to Close this location?");
-          if (r == true) {
-
-              req.isOpen = !req.IsActive;
-              $scope.urlForDelete = 'api/selectedLocation?id=' + req.LocationId + '&isOpen=' + req.isOpen;
-
-              $http({
-                  method: 'DELETE',
-                  url: $scope.urlForDelete,
-
-              }).success(function (result, status, headers) {
-                  $scope.isBusy = false;
-                  alert("Location successfully Closed. However, you can still reactivate it.");
-                  req.isActive = false;
-                  window.location.reload();
-                  //$scope.reqToAddData = {};
-
-              })
-              .error(function (result, status, headers) {
-                  $scope.isBusy = false;
-                  alert("error");
-              });
-
-          }
-          else {
-
-          }
-
-      }
-      $scope.isBusy = true;
-      $scope.reverse = false;
-      $scope.groupedItems = [];
-      $scope.itemsPerPage = 3;
-      $scope.currentPage = 0;
-
-      $scope.Edit = function (location) {
-          $location.path('/loc-edit/:' + location.LocationId);
-
-      }
-      $scope.Details = function (location) {
-          $location.path('/location-details/:' + location.LocationId);
-      }
-      $scope.Delete = function (location) {
-          var x;
-          var r = confirm("Are you sure you want to delete this Location?");
-          if (r == true) {
-              $scope.urlForDelete = 'api/SelectedLocation?id=' + location.LocationId;
-
-              $http({
-                  method: 'DELETE',
-                  url: $scope.urlForDelete,
-
-              }).success(function (result, status, headers) {
-                  $scope.isBusy = false;
-                  alert("Location successfully deleted. However, you can still reactivate it.");
-                  location.isActive = false;
-                  $location.path('/locations');
-                  //$scope.reqToAddData = {};
-
-              })
-              .error(function (result, status, headers) {
-                  $scope.isBusy = false;
-                  alert("error");
-              });
-
-          }
-          else {
-
-          }
-      }
-      $scope.range = function (start, end) {
-          var ret = [];
-          if (!end) {
-              end = start;
-              start = 0;
-          }
-          for (var i = start; i < end; i++) {
-              ret.push(i);
-          }
-          return ret;
-      };
-      $scope.prevPage = function () {
-          if ($scope.currentPage > 0) {
-              $scope.currentPage--;
-          }
-      };
-      $scope.nextPage = function () {
-          if ($scope.currentPage < $scope.pagedItems.length - 1) {
-              $scope.currentPage++;
-          }
-      };
-      $scope.setPage = function () {
-          $scope.currentPage = this.n;
-      };
-
-
-      $http.get('api/location').success(function (result, status, headers) {
-          // this callback will be called asynchronously
-          // when the response is available
-          //alert("success");
-          $scope.isBusy = false;
-          $scope.data = angular.copy(result);
-          $scope.filteredItems = angular.copy(result);
-
-          //paging
-          $scope.pagedItems = [];
-
-          for (var i = 0; i < $scope.filteredItems.length; i++) {
-              if (i % $scope.itemsPerPage === 0) {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
-              } else {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
-              }
-          }
-
-      }).error(function () {
-          $scope.isBusy = false;
-          //alert("this is an error");
-          $location.path('/home');
-
-      });
-
-      // calculate page in place
-      $scope.groupToPages = function () {
-          $scope.pagedItems = [];
-
-          for (var i = 0; i < $scope.filteredItems.length; i++) {
-              if (i % $scope.itemsPerPage === 0) {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
-              } else {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
-              }
-          }
-      };
-
-      // init the filtered items
-      $scope.search = function () {
-
-          $scope.filteredItems = $filter('filter')($scope.data, function (item) {
-
-              if (searchMatch(item.LocationName, $scope.query))
-                  return true;
-
-              return false;
-          });
-          /* take care of the sorting order
-          if ($scope.sortingOrder !== '') {
-              $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
-          }*/
-          $scope.currentPage = 0;
-          // now group by pages
-          $scope.groupToPages();
-      };
-
-      var searchMatch = function (haystack, needle) {
-          if (!needle) {
-              return true;
-          }
-          return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-      };
-
-  }
-]);
-
-app.controller('LocationDetailsController', ['$scope', '$http', '$filter', '$location', '$routeParams',
-  function LocationDetailsController($scope, $http, $filter, $location, $routeParams) {
-
-      $scope.detailsId = $routeParams.id;
-      $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
-      
-      $scope.getQueryForDetails = 'api/SelectedLocation?id=' + $scope.detailsId;
-      $scope.locationDetailsData = {};
-
-      $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
-          $scope.locationDetailsData = angular.copy(result);
-
-      }).error(function () {
-      });
-
-      $scope.getQueryForProjectDetails = 'api/location/FetchProjectsAtLocation/' + $scope.detailsId;
-      $scope.ProjectLocationDetailsData = {};
-    
-      //Pagination Code 
-
-      $scope.isBusy = true;
-      $scope.reverse = false;
-      $scope.groupedItems = [];
-      $scope.itemsPerPage = 3;
-      $scope.currentPage = 0;
-
-      $scope.range = function (start, end) {
-          var ret = [];
-          if (!end) {
-              end = start;
-              start = 0;
-          }
-          for (var i = start; i < end; i++) {
-              ret.push(i);
-          }
-          return ret;
-      };
-      $scope.prevPage = function () {
-          if ($scope.currentPage > 0) {
-              $scope.currentPage--;
-          }
-      };
-      $scope.nextPage = function () {
-          if ($scope.currentPage < $scope.pagedItems.length - 1) {
-              $scope.currentPage++;
-          }
-      };
-      $scope.setPage = function () {
-          $scope.currentPage = this.n;
-      };
-
-      $http.get($scope.getQueryForProjectDetails).success(function (result, status, headers) {
-
-          $scope.isBusy = false;
-          $scope.data = angular.copy(result);
-          $scope.filteredItems = angular.copy(result);
-
-          //paging
-          $scope.pagedItems = [];
-
-          for (var i = 0; i < $scope.filteredItems.length; i++) {
-              if (i % $scope.itemsPerPage === 0) {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
-              } else {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
-              }
-          }
-          // $scope.ProjectLocationDetailsData = angular.copy(result);
-      }).error(function () {
-      });
-      // calculate page in place
-      $scope.groupToPages = function () {
-          $scope.pagedItems = [];
-
-          for (var i = 0; i < $scope.filteredItems.length; i++) {
-              if (i % $scope.itemsPerPage === 0) {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
-              } else {
-                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
-              }
-          }
-      };
-      
-      // init the filtered items
-      $scope.search = function () {
-
-          $scope.filteredItems = $filter('filter')($scope.data, function (item) {
-
-              if (searchMatch(item.ProjectName, $scope.query))
-                  return true;
-
-              return false;
-          });
-          /* take care of the sorting order
-          if ($scope.sortingOrder !== '') {
-              $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
-          }*/
-          $scope.currentPage = 0;
-          // now group by pages
-          $scope.groupToPages();
-      };
-
-      var searchMatch = function (haystack, needle) {
-          if (!needle) {
-              return true;
-          }
-          return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-      };
-  
-  }]);
-app.controller('LocationAddController', ['$scope', '$http', '$filter', '$location', '$routeParams',
-  function LocationAddController($scope, $http, $filter, $location, $routeParams) {
-      alert("hit");
-      $scope.isBusy = false;
-      $scope.addLocation = function () {
-          $scope.isBusy = true;
-          $http({
-              method: 'POST',
-              url: 'api/location',
-              data: $scope.locationToAddData
-          }).success(function (result, status, headers) {
-              alert("Location successfully added");
-              $scope.locationToAddData = {};
-          }).error(function (result, status, headers) {
-              $scope.isBusy = false;
-              alert("error");
-          });
-      }
-  }]);
