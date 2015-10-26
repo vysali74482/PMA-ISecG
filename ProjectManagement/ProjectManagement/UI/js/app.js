@@ -48,6 +48,22 @@ app.config(['$routeProvider',
 		    templateUrl: 'UI/Templates/details-location.html',
 		    controller: 'LocationDetailsController',
 		}).
+        when('/funds', {
+               templateUrl: 'UI/Templates/funds.html',
+               controller: 'FundIndexController'
+           }).
+          when('/fund-add', {
+              templateUrl: 'UI/Templates/add-new-fund.html',
+              controller: 'FundAddController'
+          }).
+          when('/fund-edit/:id', {
+              templateUrl: 'UI/Templates/edit-funds.html',
+              controller: 'FundEditController',
+          }).
+        when('/fund-details/:id', {
+            templateUrl: 'UI/Templates/details-fund.html',
+            controller: 'FundDetailsController',
+        }).
         otherwise({
             redirectTo: '/layout'
         });
@@ -844,3 +860,287 @@ app.controller('LocationDetailsController', ['$scope', '$http', '$filter', '$loc
       }).error(function () {
       });
   }]);
+
+
+
+app.controller('FundIndexController', ['$scope', '$http', '$filter', '$location',
+  function FundIndexController($scope, $http, $filter, $location) {
+
+
+      $scope.OpenClose = function (req) {
+          //alert('hit');
+          var x;
+          var r = confirm("Are you sure you want to Close this project?");
+          if (r == true) {
+
+              req.isOpen = !req.IsActive;
+
+              $scope.urlForDelete = 'api/SelectedFund?id=' + req.FundId + '&isOpen=' + req.isOpen;
+
+
+              $http({
+                  method: 'DELETE',
+                  url: $scope.urlForDelete,
+
+              }).success(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("Transaction successfully Deleted.");
+                  req.isActive = false;
+                  window.location.reload();
+                  //$scope.reqToAddData = {};
+
+              })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+
+          }
+          else {
+
+          }
+
+      }
+
+
+      $scope.isBusy = true;
+      $scope.reverse = false;
+      $scope.groupedItems = [];
+      $scope.itemsPerPage = 3;
+      $scope.currentPage = 0;
+
+      $scope.Edit = function (fund) {
+
+          $location.path('/fund-edit/:' + fund.FundId);
+
+      }
+      $scope.Details = function (fund) {
+          $location.path('/fund-details/:' + fund.FundId);
+      }
+      $scope.Delete = function (fund) {
+          var x;
+          var r = confirm("Are you sure you want to delete this Transaction?");
+          if (r == true) {
+              $scope.urlForDelete = 'api/SelectedFund?id=' + fund.FundId + '&isOpen' + fund.isOpen;
+              
+              $http({
+                  method: 'DELETE',
+                  url: $scope.urlForDelete,
+
+              }).success(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("Transaction successfully deleted. However you can still see the old transaction");
+                  fund.isActive = false;
+                  $location.path('/funds');
+                  //$scope.reqToAddData = {};
+
+              })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+
+          }
+          else {
+
+          }
+      }
+      $scope.range = function (start, end) {
+          var ret = [];
+          if (!end) {
+              end = start;
+              start = 0;
+          }
+          for (var i = start; i < end; i++) {
+              ret.push(i);
+          }
+          
+          return ret;
+      };
+      $scope.prevPage = function () {
+          if ($scope.currentPage > 0) {
+              $scope.currentPage--;
+          }
+      };
+      $scope.nextPage = function () {
+          if ($scope.currentPage < $scope.pagedItems.length - 1) {
+              $scope.currentPage++;
+          }
+      };
+      $scope.setPage = function () {
+          $scope.currentPage = this.n;
+      };
+
+
+      $http.get('api/fund').success(function (result, status, headers) {
+          // this callback will be called asynchronously
+          // when the response is available
+          //alert("success");
+          $scope.isBusy = false;
+          $scope.data = angular.copy(result);
+          $scope.filteredItems = angular.copy(result);
+
+          //paging
+          $scope.pagedItems = [];
+
+          for (var i = 0; i < $scope.filteredItems.length; i++) {
+              if (i % $scope.itemsPerPage === 0) {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+              } else {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+              }
+          }
+
+      }).error(function () {
+          $scope.isBusy = false;
+          //alert("this is an error");
+          $location.path('/home');
+          
+      });
+
+      // calculate page in place
+      $scope.groupToPages = function () {
+          $scope.pagedItems = [];
+
+          for (var i = 0; i < $scope.filteredItems.length; i++) {
+              if (i % $scope.itemsPerPage === 0) {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+              } else {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+              }
+          }
+      };
+
+      // init the filtered items
+      $scope.search = function () {
+
+          $scope.filteredItems = $filter('filter')($scope.data, function (item) {
+
+              if (searchMatch(item.FundDesc, $scope.query))
+                  return true;
+
+              return false;
+          });
+          /* take care of the sorting order
+          if ($scope.sortingOrder !== '') {
+              $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
+          }*/
+          $scope.currentPage = 0;
+          // now group by pages
+          $scope.groupToPages();
+      };
+
+      var searchMatch = function (haystack, needle) {
+          if (!needle) {
+              return true;
+          }
+          return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+      };
+
+  }
+]);
+
+          app.controller('FundAddController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+            function FundAddController($scope, $http, $filter, $location, $routeParams) {
+
+                $scope.isBusy = false;
+                $scope.addFund = function () {
+                    $scope.isBusy = true;
+                    $http({
+                        method: 'POST',
+                        url: 'api/fund',
+                        data: $scope.fundToAddFund
+                    }).success(function (result, status, headers) {
+                        alert("Transaction successfully added");
+                        $scope.fundToAddFund = {};
+
+                    })
+                        .error(function (result, status, headers) {
+                            $scope.isBusy = false;
+                            alert("error");
+                        });
+                }
+
+            }]);
+
+          app.controller('FundEditController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+            function FundEditController($scope, $http, $filter, $location, $routeParams) {
+
+
+                $scope.detailsId = $routeParams.id;
+                $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
+                $scope.getQueryForDetails = 'api/SelectedFund?id=' + $scope.detailsId;
+
+                $scope.fundToEditFund = {};
+
+
+                $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    //alert("success");
+                    $scope.fundToEditFund = angular.copy(result);
+                    $scope.backupFundToEdit = angular.copy(result);
+
+                }).error(function () {
+
+
+                });
+
+                //all data
+
+                $scope.resetEditFundForm = function () {
+                    $scope.fundToEditFund = angular.copy($scope.backupFundToEdit);
+
+                }
+
+                $scope.editFund = function () {
+                    $scope.isBusy = true;
+                    $http({
+                        method: 'POST',
+                        url: 'api/SelectedFund',
+                        data: $scope.fundToEditFund
+                    }).success(function (result, status, headers) {
+                        $scope.isBusy = false;
+                        alert("Fund information successfully edited");
+                        $location.path('/funds');
+
+
+                    })
+                        .error(function (result, status, headers) {
+                            $scope.isBusy = false;
+                            alert("error");
+                        });
+                }
+            }]);
+
+
+          app.controller('FundDetailsController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+            function FundDetailsController($scope, $http, $filter, $location, $routeParams) {
+
+
+                $scope.detailsId = $routeParams.id;
+                $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
+                $scope.getQueryForDetails = 'api/SelectedFund?id=' + $scope.detailsId;
+                $scope.fundDetailsData = {};
+
+
+                $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    //alert("success");
+                    $scope.fundDetailsData = angular.copy(result);
+
+                }).error(function () {
+
+
+                });
+
+
+            }]);
+
+
+
+
+
+
+

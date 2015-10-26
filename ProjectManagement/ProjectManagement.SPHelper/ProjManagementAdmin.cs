@@ -18,6 +18,8 @@ namespace ProjectManagement.SPHelper
         private const string PROC_GETALLPROJECTS = "dbo.GetAllProjects";
         private const string PROC_GETALLLOCATIONS = "dbo.GetAllLocations";
         private const string PROC_GETALLUSERS = "dbo.GetAllUsers";
+        private const string PROC_GETALLFUNDS = "dbo.GetAllFunds";
+
 
         private const string PROC_ADDNEWPROJECT = "dbo.AddNewProject";
         private const string PROC_GETPROJECTBYID = "dbo.GetProjectById";
@@ -61,6 +63,15 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_ROLE_ID = "@role_id";
         private const string PARAM_PASSWORD = "@password";
         private const string PARAM_USER_IS_ACTIVE = "@is_active";
+
+        private const string PARAM_FUND_CHANGEDBY = "@changed_by";
+        private const string PARAM_FUND_RECEIVEDDATE = "@received_date";
+        private const string PARAM_FUND_CHANGEDDATE = "@changed_date";
+        private const string PARAM_FUND_DESC = "@fund_desc";
+        private const string PARAM_FUND_ID = "@fund_id";
+        private const string PARAM_FUND_AMOUNT = "@fund_amount";
+        private const string PARAM_FUND_IS_ACTIVE = "@is_active";
+     
 
         #endregion
 
@@ -330,10 +341,46 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
 
+        public static SqlDataReader GetAllFunds(out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetAllFundsParams();
+            dr = ExecuteReader(PROC_GETALLFUNDS, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetAllFundsParams()
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETALLFUNDS);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETALLFUNDS, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            return sqlParms;
+        }
+
         private const string PROC_GETUSERBYID = "dbo.GetUserById";
         private const string PROC_ADDNEWUSER = "dbo.AddNewUser";
         private const string PROC_SOFTDELETEUSER = "dbo.SoftDeleteUser";
         private const string PROC_UPDATEUSER = "dbo.UpdateUser";
+
+        private const string PROC_GETFUNDBYID = "dbo.GetFundById";
+        private const string PROC_ADDNEWFUND = "dbo.AddNewFund";
+        private const string PROC_SOFTDELETEFUND = "dbo.SoftDeleteFund";
+        private const string PROC_UPDATEFUND = "dbo.UpdateFund";
+
         #region GetUserById
         public static SqlDataReader GetUserById(int userId, out int retValue)
         {
@@ -366,6 +413,39 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
         #endregion
+        #region GetFundById
+        public static SqlDataReader GetFundById(int fundId, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetFundByIdParams(fundId);
+            dr = ExecuteReader(PROC_GETFUNDBYID, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetFundByIdParams(int fundId)
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETFUNDBYID);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_FUND_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETFUNDBYID, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = fundId;
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
         #region AddNewUser
         public static int AddNewUser(UserInfo user, out int retValue)
         {
@@ -402,6 +482,48 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
         #endregion
+
+        #region AddNewFund
+        public static int AddNewFund(FundInfo fund, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetAddFundParams(fund);
+            return ExecuteNonQuery(PROC_ADDNEWFUND, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetAddFundParams(FundInfo fund)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_ADDNEWFUND);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int),
+                                new SqlParameter(PARAM_FUND_DESC, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_FUND_AMOUNT, SqlDbType.Float),
+                           //    new SqlParameter(PARAM_FUND_RECEIVEDDATE, SqlDbType.DateTime),
+                         //     new SqlParameter(PARAM_FUND_CHANGEDDATE, SqlDbType.DateTime),
+                              new SqlParameter(PARAM_CHANGEDBY, SqlDbType.Int)
+
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_ADDNEWFUND, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            sqlParms[1].Value = fund.FundDesc;
+            sqlParms[2].Value = fund.FundAmount;
+         //   sqlParms[3].Value = fund.ReceivedDate;
+         // sqlParms[4].Value = fund.ChangedDate;
+            sqlParms[3].Value = fund.ChangedBy;
+
+            return sqlParms;
+        }
+        #endregion
+
         #region SoftDeleteUser
 
         public static int SoftDeleteUser(int userId, bool isOpen, out int retValue)
@@ -436,6 +558,42 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
         #endregion
+
+        #region SoftDeleteFund
+
+        public static int SoftDeleteFund(int fundId, bool isOpen, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetSoftDeleteFundParams(fundId, isOpen);
+            return ExecuteNonQuery(PROC_SOFTDELETEFUND, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetSoftDeleteFundParams(int fundId, bool isOpen)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_SOFTDELETEFUND);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_FUND_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_FUND_IS_ACTIVE,SqlDbType.Bit),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[2].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_SOFTDELETEFUND, sqlParms);
+            }
+
+            //Assigning values to parameter
+
+            sqlParms[0].Value = fundId;
+            sqlParms[1].Value = Convert.ToByte(isOpen);
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
         #region UpdateUsers
 
         public static int UpdateUser(UserInfo user, out int retValue)
@@ -474,6 +632,46 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
         #endregion
+
+        #region UpdateFunds
+
+        public static int UpdateFund(FundInfo fund, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetUpdateFundParams(fund);
+            return ExecuteNonQuery(PROC_UPDATEFUND, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetUpdateFundParams(FundInfo fund)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_UPDATEFUND);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_FUND_ID,SqlDbType.Int),
+                                new SqlParameter(PARAM_FUND_DESC, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_FUND_AMOUNT, SqlDbType.Float),
+                               // new SqlParameter(PARAM_CHANGEDBY, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[3].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_UPDATEFUND, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = fund.FundId;
+            sqlParms[1].Value = fund.FundDesc;
+            sqlParms[2].Value = fund.FundAmount;
+            //sqlParms[3].Value = 1;
+            sqlParms[3].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
 
         #region AddNewLocation
         public static int AddNewLocation(LocationInfo location, out int retValue)
