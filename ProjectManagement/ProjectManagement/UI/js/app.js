@@ -24,6 +24,22 @@ app.config(['$routeProvider',
             controller: 'ProjectDetailsController',
 
         }).
+          when('/users', {
+              templateUrl: 'UI/Templates/users.html',
+              controller: 'UserIndexController'
+          }).
+          when('/user-add', {
+              templateUrl: 'UI/Templates/add-new-user.html',
+              controller: 'UserAddController'
+          }).
+          when('/user-edit/:id', {
+              templateUrl: 'UI/Templates/edit-users.html',
+              controller: 'UserEditController',
+          }).
+        when('/user-details/:id', {
+            templateUrl: 'UI/Templates/details-user.html',
+            controller: 'UserDetailsController',
+        }).
         otherwise({
             redirectTo: '/layout'
         });
@@ -343,3 +359,282 @@ app.controller('ProjectDetailsController', ['$scope', '$http', '$filter', '$loca
 
 
   }]);
+
+
+app.controller('UserIndexController', ['$scope', '$http', '$filter', '$location',
+  function UserIndexController($scope, $http, $filter, $location) {
+
+
+      $scope.OpenClose = function (req) {
+          //alert('hit');
+          var x;
+          var r = confirm("Are you sure you want to Close this project?");
+          if (r == true) {
+
+              req.isOpen = !req.IsActive;
+
+              $scope.urlForDelete = 'api/selectedUser?id=' + req.UserId+ '&isOpen=' + req.isOpen;
+           
+
+              $http({
+                  method: 'DELETE',
+                  url: $scope.urlForDelete,
+
+              }).success(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("User successfully Closed. However, you can still reactivate the user.");
+                  req.isActive = false;
+                  window.location.reload();
+                  //$scope.reqToAddData = {};
+
+              })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+
+          }
+          else {
+
+          }
+
+      }
+
+
+      $scope.isBusy = true;
+      $scope.reverse = false;
+      $scope.groupedItems = [];
+      $scope.itemsPerPage = 3;
+      $scope.currentPage = 0;
+
+      $scope.Edit = function (user) {
+          
+          $location.path('/user-edit/:' + user.UserId);
+
+      }
+      $scope.Details = function (user) {
+          $location.path('/user-details/:' + user.UserId);
+      }
+      $scope.Delete = function (user) {
+          var x;
+          var r = confirm("Are you sure you want to delete this User?");
+          if (r == true) {
+              
+              user.isOpen = !user.IsActive;
+
+              $scope.urlForDelete = 'api/selectedUser?id=' + user.UserId + '&isOpen=' + user.isOpen;
+              $http({
+                  method: 'DELETE',
+                  url: $scope.urlForDelete,
+
+              }).success(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("User successfully deleted. However, you can still reactivate the user.");
+                  user.isActive = false;
+                   $location.path('/users');
+                  //$scope.reqToAddData = {};
+
+              })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+
+          }
+          else {
+
+          }
+       }
+      $scope.range = function (start, end) {
+          var ret = [];
+          if (!end) {
+              end = start;
+              start = 0;
+          }
+          for (var i = start; i < end; i++) {
+              ret.push(i);
+          }
+          return ret;
+      };
+      $scope.prevPage = function () {
+          if ($scope.currentPage > 0) {
+              $scope.currentPage--;
+          }
+      };
+      $scope.nextPage = function () {
+          if ($scope.currentPage < $scope.pagedItems.length - 1) {
+              $scope.currentPage++;
+          }
+      };
+      $scope.setPage = function () {
+          $scope.currentPage = this.n;
+      };
+
+
+      $http.get('api/user').success(function (result, status, headers) {
+          // this callback will be called asynchronously
+          // when the response is available
+          //alert("success");
+          $scope.isBusy = false;
+          $scope.data = angular.copy(result);
+          $scope.filteredItems = angular.copy(result);
+
+          //paging
+          $scope.pagedItems = [];
+
+          for (var i = 0; i < $scope.filteredItems.length; i++) {
+              if (i % $scope.itemsPerPage === 0) {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+              } else {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+              }
+          }
+
+      }).error(function () {
+          $scope.isBusy = false;
+          //alert("this is an error");
+          $location.path('/home');
+
+      });
+
+      // calculate page in place
+      $scope.groupToPages = function () {
+          $scope.pagedItems = [];
+
+          for (var i = 0; i < $scope.filteredItems.length; i++) {
+              if (i % $scope.itemsPerPage === 0) {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+              } else {
+                  $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+              }
+          }
+      };
+
+      // init the filtered items
+      $scope.search = function () {
+
+          $scope.filteredItems = $filter('filter')($scope.data, function (item) {
+
+              if (searchMatch(item.UserName, $scope.query))
+                  return true;
+
+              return false;
+          });
+          /* take care of the sorting order
+          if ($scope.sortingOrder !== '') {
+              $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
+          }*/
+          $scope.currentPage = 0;
+          // now group by pages
+          $scope.groupToPages();
+      };
+
+      var searchMatch = function (haystack, needle) {
+          if (!needle) {
+              return true;
+          }
+          return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+      };
+
+  }
+]);
+
+app.controller('UserAddController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+  function UserAddController($scope, $http, $filter, $location, $routeParams) {
+
+      $scope.isBusy = false;
+      $scope.addUser = function () {
+          $scope.isBusy = true;
+          $http({
+              method: 'POST',
+              url: 'api/user',
+              data: $scope.userToAddData
+          }).success(function (result, status, headers) {
+              alert("User successfully added");
+              $scope.userToAddData = {};
+
+          })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+      }
+
+  }]);
+
+app.controller('UserEditController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+  function UserEditController($scope, $http, $filter, $location, $routeParams) {
+
+      alert("hi");
+      $scope.detailsId = $routeParams.id;
+      $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
+      $scope.getQueryForDetails = 'api/SelectedUser?id=' + $scope.detailsId;
+      alert($scope.getQueryForDetails);
+
+      $scope.userToEditData = {};
+
+
+      $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
+          // this callback will be called asynchronously
+          // when the response is available
+          //alert("success");
+          $scope.userToEditData = angular.copy(result);
+          $scope.backupUserToEdit = angular.copy(result);
+
+      }).error(function () {
+
+
+      });
+
+      //all data
+
+     $scope.resetEditUserForm = function () {
+          $scope.userToEditData = angular.copy($scope.backupUserToEdit);
+
+      }
+
+      $scope.editUser = function () {
+          $scope.isBusy = true;
+          $http({
+              method: 'POST',
+              url: 'api/Selecteduser',
+              data: $scope.userToEditData
+          }).success(function (result, status, headers) {
+              $scope.isBusy = false;
+              alert("User information successfully edited");
+               $location.path('/users');
+
+
+          })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+      }
+  }]);
+
+
+app.controller('UserDetailsController', ['$scope', '$http', '$filter', '$location', '$routeParams',
+  function UserDetailsController($scope, $http, $filter, $location, $routeParams) {
+
+
+      $scope.detailsId = $routeParams.id;
+      $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
+      $scope.getQueryForDetails = 'api/SelectedUser?id=' + $scope.detailsId;
+      $scope.userDetailsData = {};
+
+
+      $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
+          // this callback will be called asynchronously
+          // when the response is available
+          //alert("success");
+          $scope.userDetailsData = angular.copy(result);
+
+      }).error(function () {
+
+
+      });
+
+
+  }]);
+

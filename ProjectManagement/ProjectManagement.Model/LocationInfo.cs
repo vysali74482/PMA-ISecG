@@ -12,10 +12,17 @@ namespace ProjectManagement.Model
 
         public string LocationName { get; set; }
 
+        public Boolean IsActive { get; set; }
+
+        public string OpenClose { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime ChangedDate { get; set; }
 
-        public string ChangedBy { get; set; }
+        public int ChangedById { get; set; }
+
+        public string ChangedByName { get; set; }
+
     }
 }

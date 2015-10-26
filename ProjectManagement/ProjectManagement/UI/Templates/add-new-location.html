@@ -1,0 +1,42 @@
+﻿<div class="page-header position-relative">
+    <div class="templatemo-panels">
+        <div class="row">
+
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <form class="form-horizontal" ng-submit="addLocation()">
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Location Name</label>
+
+                                <div class="controls">
+                                    <input type="text" id="form-field-1" name="Name" ng-model="locationToAddData.LocationName" />
+                                    <input type="hidden" id="form-field-2" name="ChangedBy" ng-model="locationToAddData.ChangedById" value="1" />    
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    Add Location
+                                </button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="icon-undo bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+                            <div class="hr"></div>
+                        </form>
+                        <div class="progress progress-warning progress-small progress-stripped active" ng-show="isBusy">
+
+                            <div class="bar" style="width: 100%;"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

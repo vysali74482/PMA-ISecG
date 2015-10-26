@@ -1,0 +1,89 @@
+﻿
+<div class="margin-bottom-30">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#/location-add">Add Location <span class="badge"></span></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<table>
+
+    <tr>
+        <td>
+            <input type="text" ng-model="query" ng-change="search()" class="input-large search-query" placeholder="Search by name">
+        </td>
+        <td>&nbsp;&nbsp;</td>
+
+    </tr>
+</table>
+<br />
+
+<div class="progress progress-warning progress-small progress-stripped active" ng-show="isBusy">
+
+    <div class="bar" style="width: 100%;"></div>
+
+</div>
+
+<br />
+
+<div class="templatemo-panels">
+    <div class="row">
+
+        <div class="col-md-8 col-sm-8 margin-bottom-30">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Project Data</div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tr ng-repeat="i in pagedItems[currentPage]">
+                            <td>{{i.LocationId}}</td>
+                            <td>{{i.LocationName}}</td>
+                            <td>
+                                <button class="btn btn-small btn-grey" ng-click="Details(i)">Details</button> &nbsp;&nbsp;
+                            </td>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="pagination pull-left">
+                                        <li ng-class="{disabled: currentPage == 0}">
+                                            <a href ng-click="prevPage()">« Prev</a>
+                                        </li>
+                                        <li ng-repeat="n in range(pagedItems.length)"
+                                            ng-class="{active: n == currentPage}"
+                                            ng-click="setPage()">
+                                            <a href ng-bind="n + 1">1</a>
+                                        </li>
+                                        <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                            <a href ng-click="nextPage()">Next »</a>
+                                        </li>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+
