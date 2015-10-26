@@ -33,11 +33,11 @@ namespace ProjectManagement.BL
 
 
 
-        public static HttpResponseMessage SoftDeleteFund(int fundId, bool isOpen)
+        public static HttpResponseMessage SoftDeleteFund(int fundId)
         {
             try
             {
-                int val = FundDal.SoftDeleteFund(fundId, isOpen);
+                int val = FundDal.SoftDeleteFund(fundId);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex)

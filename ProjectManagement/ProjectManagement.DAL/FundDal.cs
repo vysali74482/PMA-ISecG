@@ -66,10 +66,10 @@ namespace ProjectManagement.DAL
 
             return fund;
         }
-        public static int SoftDeleteFund(int fundId, bool isOpen)
+        public static int SoftDeleteFund(int fundId)
         {
             int retValue = -1;
-            return ProjManagementAdmin.SoftDeleteFund(fundId, isOpen, out retValue);
+            return ProjManagementAdmin.SoftDeleteFund(fundId,  out retValue);
         }
 
         public static int UpdateFund(FundInfo fund)

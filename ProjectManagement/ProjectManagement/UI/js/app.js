@@ -919,19 +919,20 @@ app.controller('FundIndexController', ['$scope', '$http', '$filter', '$location'
       }
       $scope.Delete = function (fund) {
           var x;
-          var r = confirm("Are you sure you want to delete this Transaction?");
+          var r = confirm("Are you sure you want to delete this transaction");
           if (r == true) {
-              $scope.urlForDelete = 'api/SelectedFund?id=' + fund.FundId + '&isOpen' + fund.isOpen;
+              $scope.urlForDelete = 'api/SelectedFund?id=' + fund.FundId;
               
               $http({
                   method: 'DELETE',
                   url: $scope.urlForDelete,
-
+                
               }).success(function (result, status, headers) {
                   $scope.isBusy = false;
-                  alert("Transaction successfully deleted. However you can still see the old transaction");
+                  alert("Transaction successfully deleted.");
                   fund.isActive = false;
                   $location.path('/funds');
+                  window.location.reload();
                   //$scope.reqToAddData = {};
 
               })

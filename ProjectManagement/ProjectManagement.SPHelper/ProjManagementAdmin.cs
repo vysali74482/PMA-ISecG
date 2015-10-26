@@ -561,14 +561,14 @@ namespace ProjectManagement.SPHelper
 
         #region SoftDeleteFund
 
-        public static int SoftDeleteFund(int fundId, bool isOpen, out int retValue)
+        public static int SoftDeleteFund(int fundId, out int retValue)
         {
             retValue = -1;
-            SqlParameter[] parms = GetSoftDeleteFundParams(fundId, isOpen);
+            SqlParameter[] parms = GetSoftDeleteFundParams(fundId);
             return ExecuteNonQuery(PROC_SOFTDELETEFUND, parms, out retValue);
         }
 
-        private static SqlParameter[] GetSoftDeleteFundParams(int fundId, bool isOpen)
+        private static SqlParameter[] GetSoftDeleteFundParams(int fundId)
         {
             SqlParameter[] sqlParms = new SqlParameter[100];
             sqlParms = SQLHelper.GetCachedParameters(PROC_SOFTDELETEFUND);
@@ -577,18 +577,16 @@ namespace ProjectManagement.SPHelper
                 sqlParms = new SqlParameter[]
                             {
                                 new SqlParameter(PARAM_FUND_ID, SqlDbType.Int),
-                                new SqlParameter(PARAM_FUND_IS_ACTIVE,SqlDbType.Bit),
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int)
                             };
 
-                sqlParms[2].Direction = ParameterDirection.ReturnValue;
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
                 SQLHelper.CacheParameters(PROC_SOFTDELETEFUND, sqlParms);
             }
 
             //Assigning values to parameter
 
             sqlParms[0].Value = fundId;
-            sqlParms[1].Value = Convert.ToByte(isOpen);
             sqlParms[1].Value = -1;
             return sqlParms;
         }

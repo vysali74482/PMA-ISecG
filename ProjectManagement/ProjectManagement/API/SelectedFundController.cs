@@ -27,11 +27,10 @@ namespace ProjectManagement.API
 
         }
 
-        public HttpResponseMessage Delete(int id, bool isOpen)
+        public HttpResponseMessage Delete(int id)
         {
 
-            return FundBl.SoftDeleteFund
-                (id, isOpen);
+            return FundBl.SoftDeleteFund(id);
 
         }
     }
