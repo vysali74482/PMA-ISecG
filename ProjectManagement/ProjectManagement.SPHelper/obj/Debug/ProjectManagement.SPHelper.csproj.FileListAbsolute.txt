@@ -33,3 +33,10 @@ C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.SPHe
 C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.SPHelper\obj\Debug\ProjectManagement.SPHelper.csprojResolveAssemblyReference.cache
 C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.SPHelper\obj\Debug\ProjectManagement.SPHelper.dll
 C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.SPHelper\obj\Debug\ProjectManagement.SPHelper.pdb
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\bin\Debug\ProjectManagement.SPHelper.dll
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\bin\Debug\ProjectManagement.SPHelper.pdb
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\bin\Debug\ProjectManagement.Model.dll
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\bin\Debug\ProjectManagement.Model.pdb
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\obj\Debug\ProjectManagement.SPHelper.csprojResolveAssemblyReference.cache
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\obj\Debug\ProjectManagement.SPHelper.dll
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.SPHelper\obj\Debug\ProjectManagement.SPHelper.pdb

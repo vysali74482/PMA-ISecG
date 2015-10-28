@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticateBL.cs" />
     <Compile Include="ProjectBl.cs" />
     <Compile Include="LocationBl.cs" />
     <Compile Include="ProjectLocationBl.cs" />

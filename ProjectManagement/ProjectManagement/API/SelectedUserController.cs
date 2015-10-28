@@ -13,8 +13,6 @@ namespace ProjectManagement.API
     {
         public UserInfo Get(int id)
         {
-
-
             UserInfo user = new UserInfo();
             user = UserBl.GetUserById(id);
             return user;

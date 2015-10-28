@@ -61,7 +61,11 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_USER_EMAIL = "@user_email";
         private const string PARAM_ROLE_ID = "@role_id";
         private const string PARAM_PASSWORD = "@password";
+        private const string PARAM_FIRST_NAME = "@first_name";
+        private const string PARAM_LAST_NAME = "@last_name";
         private const string PARAM_USER_IS_ACTIVE = "@is_active";
+        //private const string PARAM_IS_ACTIVE = "@is_active";
+        //private const string PARAM_CREATEDDATE = "@created_date";
 
         #endregion
 
@@ -273,6 +277,63 @@ namespace ProjectManagement.SPHelper
         }
         #endregion
 
+        #region Authentication
+        public static SqlDataReader AuthenticateUser(string userName, string password, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_AUTHENTICATEUSER);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_USER_NAME, SqlDbType.VarChar),
+                                new SqlParameter(PARAM_PASSWORD, SqlDbType.VarChar),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[2].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_AUTHENTICATEUSER, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = userName;
+            sqlParms[1].Value = password;
+            sqlParms[2].Value = -1;
+
+            dr = ExecuteReader(PROC_AUTHENTICATEUSER, sqlParms, out retValue);
+
+            return dr;
+        }
+
+        public static int RegisterAccount(AccountInfo account, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_REGISTERUSER);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_USER_NAME, SqlDbType.VarChar),
+                                new SqlParameter(PARAM_PASSWORD, SqlDbType.VarChar),
+                                 new SqlParameter(PARAM_FIRST_NAME, SqlDbType.VarChar),
+                                  new SqlParameter(PARAM_LAST_NAME, SqlDbType.VarChar),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[4].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_REGISTERUSER, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = account.UserName;
+            sqlParms[1].Value = account.Password;
+            sqlParms[2].Value = account.FirstName;
+            sqlParms[3].Value = account.LastName;
+            sqlParms[4].Value = -1;
+            return ExecuteNonQuery(PROC_REGISTERUSER, sqlParms, out retValue);
+        }
+        #endregion
 
         static ProjManagementAdmin()
         {
@@ -335,6 +396,9 @@ namespace ProjectManagement.SPHelper
         private const string PROC_ADDNEWUSER = "dbo.AddNewUser";
         private const string PROC_SOFTDELETEUSER = "dbo.SoftDeleteUser";
         private const string PROC_UPDATEUSER = "dbo.UpdateUser";
+        private const string PROC_AUTHENTICATEUSER = "dbo.AuthenticateUser";
+        private const string PROC_REGISTERUSER = "dbo.RegisterUser";
+
         #region GetUserById
         public static SqlDataReader GetUserById(int userId, out int retValue)
         {
