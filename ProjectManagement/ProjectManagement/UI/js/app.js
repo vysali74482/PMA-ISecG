@@ -90,10 +90,10 @@
                 templateUrl: 'UI/Templates/projects.html',
                 controller: 'ProjectIndexController'
             }).
-                      when('/project-add', {
-                          templateUrl: 'UI/Templates/add-new-project.html',
-                          controller: 'ProjectAddController'
-                      }).
+          when('/project-add', {
+              templateUrl: 'UI/Templates/add-new-project.html',
+              controller: 'ProjectAddController'
+          }).
           when('/proj-edit/:id', {
               templateUrl: 'UI/Templates/edit-project.html',
               controller: 'ProjectEditController',
@@ -819,4 +819,4 @@
 
     };
 
-})();
+});
