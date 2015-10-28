@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountInfo.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectLeadInfo.cs" />
     <Compile Include="ProjectLocationInfo.cs" />

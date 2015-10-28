@@ -18,7 +18,6 @@ namespace ProjectManagement.DAL
 
             int retValue = -1;
 
-
             //Generated Code for query : dbo.GetAllVendors
             using (SqlDataReader dr = ProjManagementAdmin.GetAllProjects(out retValue)) //Initialize and retrieve code for Datareader goes here
             {

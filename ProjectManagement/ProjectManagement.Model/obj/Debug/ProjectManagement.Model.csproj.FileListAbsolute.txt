@@ -21,3 +21,8 @@ C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Mode
 C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.dll
 C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.pdb
 C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.csprojResolveAssemblyReference.cache
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.dll
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.pdb
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.csprojResolveAssemblyReference.cache
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.dll
+C:\Users\nsonthal\Documents\GitHub\PMA-ISecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.pdb
