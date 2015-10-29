@@ -212,7 +212,6 @@
                 url: 'api/register',
                 data: vm
             }).success(function (result, status, headers) {
-                alert(result);
                 if(result=='0')
                     alert("Registration successful");
                 else if (result == '1')
