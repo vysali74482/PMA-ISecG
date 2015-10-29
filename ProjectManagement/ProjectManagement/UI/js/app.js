@@ -2,7 +2,6 @@
     'use strict';
 
     angular
-        //.module('app', ['ngRoute', 'ngCookies', 'ui.select','ngSanitize' ])
         .module('app', ['ngRoute', 'ngCookies'])
         .config(config)
         .run(run)
@@ -169,7 +168,12 @@
                 url: 'api/register',
                 data: vm
             }).success(function (result, status, headers) {
-                alert("Registration successful");
+                if(result=='0')
+                    alert("Registration successful");
+                else if (result == '1')
+                    alert("UserName already exist");
+                else
+                    alert("There is some error in registration. Please try again after sometime.");
                 AuthenticationService.SetCredentials(vm.username, vm.password);
                 initUserController();
                 $location.path('/login');
