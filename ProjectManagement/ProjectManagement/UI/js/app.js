@@ -212,7 +212,14 @@
                 url: 'api/register',
                 data: vm
             }).success(function (result, status, headers) {
-                alert("Registration successful");
+                alert(result);
+                if(result=='0')
+                    alert("Registration successful");
+                else if (result == '1')
+                    alert("UserName already exist");
+                else
+                    alert("There is some error in registration. Please try again after sometime.");
+
                 AuthenticationService.SetCredentials(vm.username, vm.password);
                 initUserController();
                 $location.path('/login');
@@ -819,4 +826,4 @@
 
     };
 
-});
+})();

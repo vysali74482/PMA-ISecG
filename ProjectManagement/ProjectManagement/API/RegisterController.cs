@@ -11,17 +11,31 @@ namespace ProjectManagement.API
 {
     public class RegisterController : ApiController
     {
-        public HttpResponseMessage Post(AccountInfo account)
+        //public HttpResponseMessage Post(AccountInfo account)
+        //{
+        //    try
+        //    {
+        //        AuthenticateBL.RegisterAccount(account);
+
+        //        return new HttpResponseMessage(HttpStatusCode.OK);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new HttpResponseMessage(HttpStatusCode.BadRequest);
+        //    }
+        //}
+
+        public int Post(AccountInfo account)
         {
             try
             {
-                AuthenticateBL.RegisterAccount(account);
+                int retValue = AuthenticateBL.RegisterAccount(account);
 
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return retValue;
             }
             catch (Exception ex)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return 2;
             }
         }
 

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountInfo.cs" />
+    <Compile Include="FundInfo.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectLeadInfo.cs" />
     <Compile Include="ProjectLocationInfo.cs" />
