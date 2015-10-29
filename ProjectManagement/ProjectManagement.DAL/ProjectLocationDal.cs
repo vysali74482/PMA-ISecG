@@ -37,8 +37,7 @@ namespace ProjectManagement.DAL
                     proj_loc.IsActive = Convert.ToBoolean(dr["is_active"]);
                     proj_loc.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     proj_loc.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    proj_loc.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    proj_loc.ChangedByName = dr["changed_by_name"].ToString();
+                    proj_loc.ChangedByName = dr["changed_by"].ToString();
 
                     if (proj_loc.IsActive == true)
                     {
@@ -84,8 +83,7 @@ namespace ProjectManagement.DAL
                     project.IsActive = Convert.ToBoolean(dr["is_active"]);
                     project.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     project.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    project.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    project.ChangedByName = dr["changed_by_name"].ToString();
+                    project.ChangedByName = dr["changed_by"].ToString();
 
                     if (project.IsActive == true)
                     {

@@ -1,4 +1,4 @@
-﻿using ProjectManagement.Model;
+using ProjectManagement.Model;
 using ProjectManagement.SPHelper;
 using System;
 using System.Collections;
@@ -35,8 +35,7 @@ namespace ProjectManagement.DAL
                     project.IsActive = Convert.ToBoolean(dr["is_active"]);
                     project.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     project.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    project.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    project.ChangedByName = dr["changed_by_name"].ToString();
+                    project.ChangedByName = dr["changed_by"].ToString();
                     if(project.IsActive == true)
                     {
                         project.OpenClose = "Close";
@@ -74,8 +73,7 @@ namespace ProjectManagement.DAL
                     project.IsActive = Convert.ToBoolean(dr["is_active"]);
                     project.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     project.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    project.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    project.ChangedByName = dr["changed_by_name"].ToString();
+                    project.ChangedByName = dr["changed_by"].ToString();
 
                 }
                 //dr.Close();

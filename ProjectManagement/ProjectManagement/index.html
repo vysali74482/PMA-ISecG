@@ -1,0 +1,65 @@
+﻿<head>
+    <meta charset="utf-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <title>Project Management Application</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="Content\templatemo_415_dashboard/css/templatemo_main.css">
+    <link href="Content/templatemo_415_dashboard/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body ng-app="app">
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <div class="logo">
+                <h1>Project Management Application</h1>
+            </div>
+        </div>
+    </div>
+    <div class="template-page-wrapper">
+        <div class="templatemo-content-wrapper">
+            <div class="templatemo-content">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div ng-view></div>
+            </div>
+        </div>
+        <footer class="templatemo-footer">
+            <div class="templatemo-copyright">
+                <p>Copyright &copy; 2015 Team Intelligo</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="Content\templatemo_415_dashboard/js/jquery.min.js"></script>
+    <script src="Content\templatemo_415_dashboard/js/bootstrap.min.js"></script>
+    <script src="Content\templatemo_415_dashboard/js/Chart.min.js"></script>
+    <script src="Content\templatemo_415_dashboard/js/templatemo_script.js"></script>
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-cookies.js"></script>
+    <script src="UI/js/app.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="UI/js/authentication.service.js"></script>
+    <script src="UI/js/flash.service.js"></script>
+
+    <!-- Real user service that uses an api -->
+    <!-- <script src="//cdn.rawgit.com/cornflourblue/angular-registration-login-example/master/app-services/user.service.js"></script>-->
+    <!-- Fake user service for demo that uses local storage -->
+    <script src="//cdn.rawgit.com/cornflourblue/angular-registration-login-example/master/app-services/user.service.local-storage.js"></script>
+
+
+
+    <script type="text/javascript">
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        $('#loading-example-btn').click(function () {
+            var btn = $(this);
+            btn.button('loading');
+            // $.ajax(...).always(function () {
+            //   btn.button('reset');
+            // });
+        });
+    </script>
+</body>

@@ -30,8 +30,7 @@ namespace ProjectManagement.DAL
                     location.LocationName = dr["location_name"].ToString();
                     location.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     location.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    location.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    location.ChangedByName = dr["changed_by_name"].ToString();
+                    location.ChangedByName = dr["changed_by"].ToString();
                     al.Add(location);
                 }
                 //dr.Close();
@@ -56,8 +55,7 @@ namespace ProjectManagement.DAL
                     location.IsActive = Convert.ToBoolean(dr["is_active"]);
                     location.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     location.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    location.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    location.ChangedByName = dr["changed_by_name"].ToString();
+                    location.ChangedByName = dr["changed_by"].ToString();
                 }
                 //dr.Close();
             }

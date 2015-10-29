@@ -42,11 +42,10 @@ h1 { font-size: 24px; }
     width: 100%;
 }
 .templatemo-content {
-    margin-left: 235px;
+    margin-left: 0px;
     margin-top: 0px;
-    min-height: 600px;
-    padding: 25px 20px 0 20px;
-    background-color: white;
+    min-height: 800px;
+    background-color: whitesmoke;
     overflow-x: hidden;
 }
 .templatemo-footer {
@@ -67,7 +66,7 @@ h1 { font-size: 24px; }
     display: inline-block;
 }
 .navbar {
-    margin-bottom: 0;
+    margin-bottom: 0px;
     border-radius: 0;
 }
 .navbar-header { color: rgb(127,127,127); }

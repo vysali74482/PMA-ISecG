@@ -36,7 +36,7 @@ namespace ProjectManagement.DAL
                     //user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     //user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
                     user.UserId = Convert.ToInt32(dr["changed_by"]);
-                    user.ChangedByName = dr["changed_by_name"].ToString();
+                    user.ChangedByName = dr["changed_by"].ToString();
 
                     al.Add(user);
                 }
@@ -65,8 +65,7 @@ namespace ProjectManagement.DAL
                     //user.Password = Convert.ToChar(dr["password"]);
                     //user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     //user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    user.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    user.ChangedByName = dr["changed_by_name"].ToString();
+                    user.ChangedByName = dr["changed_by"].ToString();
                 }
                 //dr.Close();
             }
@@ -112,8 +111,7 @@ namespace ProjectManagement.DAL
                     //user.Password = Convert.ToChar(dr["password"]);
                     //user.CreatedDate = Convert.ToDateTime(dr["created_date"]);
                     //user.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
-                    user.ChangedById = Convert.ToInt32(dr["changed_by"]);
-                    user.ChangedByName = dr["changed_by_name"].ToString();
+                    user.ChangedByName = dr["changed_by"].ToString();
 
                     al.Add(user);
                 }
