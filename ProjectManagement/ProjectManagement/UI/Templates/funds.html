@@ -30,7 +30,7 @@
 
 <br />
 
-<div class="templatemo-panels">
+<div class="templatemo-panels" style="width: 100%;">
     <div class="row">
 
         <div class="col-md-8 col-sm-8 margin-bottom-30">
@@ -41,9 +41,6 @@
 
                         <thead>
                             <tr>
-                                <th>
-                                    ID
-                                </th>
                                 <th>
                                     Description
                                 </th>
@@ -59,12 +56,13 @@
                                 <th>
                                     Changed by
                                 </th>
-
+                                <th colspan="2">
+                                    Action
+                                </th>
                             </tr>
                         </thead>
 
                         <tr ng-repeat="i in pagedItems[currentPage]">
-                            <td>{{i.FundId}}</td>
                             <td>{{i.FundDesc}}</td>
                             <td>{{i.FundAmount}}</td>
                             <td>{{i.ReceivedDate}}</td>
@@ -72,7 +70,7 @@
                             <td>{{i.ChangedBy}}</td>
 
 
-                            <td>
+                            <td colspan="2">
 
                                 <button class="btn btn-small btn-grey" ng-click="Edit(i)">Edit</button>&nbsp;&nbsp;
 

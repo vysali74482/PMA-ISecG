@@ -40,10 +40,10 @@ namespace ProjectManagement.BL
 
         }
 
-        public static HttpResponseMessage AddProjectToLocation(int ProjectId, int LocationId) {
+        public static HttpResponseMessage AddProjectToLocation(ProjectLocationInfo ProjLoc) {
             try
             {
-                int val = ProjectLocationDal.AddProjectAtLocation(ProjectId, LocationId);
+                int val = ProjectLocationDal.AddProjectAtLocation(ProjLoc);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex)

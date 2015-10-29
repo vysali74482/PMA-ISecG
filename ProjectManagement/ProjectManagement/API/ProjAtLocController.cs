@@ -50,9 +50,9 @@ namespace ProjectManagement.API
             return ProjectLocationBl.SoftDeleteProjectAtLocation(id, isOpen);
         }
 
-        public HttpResponseMessage Post(int ProjectId,int LocationId)
+        public HttpResponseMessage Post(ProjectLocationInfo ProjLoc)
         {
-            return ProjectLocationBl.AddProjectToLocation(ProjectId,LocationId);            
+            return ProjectLocationBl.AddProjectToLocation(ProjLoc);            
         }
     }
 }

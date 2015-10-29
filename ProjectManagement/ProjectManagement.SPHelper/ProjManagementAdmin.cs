@@ -578,9 +578,7 @@ namespace ProjectManagement.SPHelper
                                 new SqlParameter(PARAM_RETURN, SqlDbType.Int),
                                 new SqlParameter(PARAM_FUND_DESC, SqlDbType.NVarChar, 100),
                                 new SqlParameter(PARAM_FUND_AMOUNT, SqlDbType.Float),
-                           //    new SqlParameter(PARAM_FUND_RECEIVEDDATE, SqlDbType.DateTime),
-                         //     new SqlParameter(PARAM_FUND_CHANGEDDATE, SqlDbType.DateTime),
-                              new SqlParameter(PARAM_CHANGEDBY, SqlDbType.Int)
+                              new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 50)
 
                             };
 
@@ -592,9 +590,7 @@ namespace ProjectManagement.SPHelper
             sqlParms[0].Value = -1;
             sqlParms[1].Value = fund.FundDesc;
             sqlParms[2].Value = fund.FundAmount;
-         //   sqlParms[3].Value = fund.ReceivedDate;
-         // sqlParms[4].Value = fund.ChangedDate;
-            sqlParms[3].Value = fund.ChangedBy;
+            sqlParms[3].Value = "vysali";
 
             return sqlParms;
         }
@@ -989,14 +985,14 @@ namespace ProjectManagement.SPHelper
 
         private const string PROC_ADDPROJECTATLOC = "dbo.AddProjectAtLocation";
 
-        public static int AddProjectAtLocation(int ProjectId, int LocationId, out int retValue)
+        public static int AddProjectAtLocation(ProjectLocationInfo ProjLoc, out int retValue)
         {
             retValue = -1;
-            SqlParameter[] parms = GetAddProjectAtLocationParams(ProjectId, LocationId);
+            SqlParameter[] parms = GetAddProjectAtLocationParams(ProjLoc);
             return ExecuteNonQuery(PROC_ADDPROJECTATLOC, parms, out retValue);
         }
 
-        private static SqlParameter[] GetAddProjectAtLocationParams(int ProjectId, int LocationId)
+        private static SqlParameter[] GetAddProjectAtLocationParams(ProjectLocationInfo ProjLoc)
         {
             SqlParameter[] sqlParms = new SqlParameter[100];
             sqlParms = SQLHelper.GetCachedParameters(PROC_ADDPROJECTATLOC);
@@ -1004,22 +1000,22 @@ namespace ProjectManagement.SPHelper
             {
                 sqlParms = new SqlParameter[]
                             {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int),
                                 new SqlParameter(PARAM_PROJECT_ID, SqlDbType.Int),
-                                new SqlParameter(PARAM_LOCATION_ID,SqlDbType.Int),
-                                new SqlParameter(PARAM_CHANGEDBY,SqlDbType.Int),
-                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                                new SqlParameter(PARAM_LOCATION_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 50)
+
                             };
 
-                sqlParms[2].Direction = ParameterDirection.ReturnValue;
-                SQLHelper.CacheParameters(PROC_ADDPROJECTATLOC, sqlParms);
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_ADDNEWPROJECT, sqlParms);
             }
 
             //Assigning values to parameter
-
-            sqlParms[0].Value = ProjectId;
-            sqlParms[1].Value = LocationId;
-            sqlParms[2].Value = 1;
-            sqlParms[3].Value = -1;
+            sqlParms[0].Value = -1;
+            sqlParms[1].Value = ProjLoc.ProjectId;
+            sqlParms[2].Value = ProjLoc.LocationId;
+            sqlParms[3].Value = "vysali";
             return sqlParms;
         }
         #endregion

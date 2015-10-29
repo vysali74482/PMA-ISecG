@@ -103,10 +103,10 @@ namespace ProjectManagement.DAL
             return allInfo;
         }
 
-        public static int AddProjectAtLocation(int ProjectId, int LocationId)
+        public static int AddProjectAtLocation(ProjectLocationInfo ProjLoc)
         {
             int retValue = -1;
-            return ProjManagementAdmin.AddProjectAtLocation(ProjectId, LocationId, out retValue);
+            return ProjManagementAdmin.AddProjectAtLocation(ProjLoc, out retValue);
         }
 
     }
