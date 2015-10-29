@@ -59,22 +59,12 @@
                     Project Lead
                 </td>
                 <td>
-                    {{projectDetailsData.ProjectLead}}
+                    {{projectDetailsData.ProjectLeadName}}
                 </td>
             </tr>
 
-            
-
-
-
         </table>
     </div>
-
-
-
-
-
-
 
     <div class="span12">
         <table id="Table3" class="table table-striped table-bordered table-hover" style="width:500px;">
@@ -104,18 +94,17 @@
                     Changed By
                 </td>
                 <td>
-                    {{projectDetailsData.ChangedBy}}
+                    {{projectDetailsData.ChangedByName}}
                 </td>
             </tr>
-
-
-
         </table>
+        <div class="form-actions">
+            <button class="btn btn-info" type="submit" ng-click="back()">
+                <i class="icon-ok bigger-110"></i>
+                Back To Projects
+            </button>
+        </div>
     </div>
-
-
-
-
     <br />
 
 

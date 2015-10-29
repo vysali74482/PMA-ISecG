@@ -33,16 +33,26 @@ namespace ProjectManagement.API
         }
         // GET api/<controller>/GetProjectsAtLocation/5
         [HttpGet]
-        public JsonResult<IEnumerable<ProjectLocationInfo>> FetchProjectsAtLocation(int locationId)
+        public JsonResult<IEnumerable<ProjectLocationInfo>> FetchProjectsAtLocation(int id)
         {
 
-            ProjectLocationInfo[] ListOfProjects = ProjectLocationBl.GetProjectsAtLocation(locationId);
+            ProjectLocationInfo[] ListOfProjects = ProjectLocationBl.GetProjectsAtLocation(id);
 
             var proj = from c in ListOfProjects
                        select c;
             return Json(proj);
 
         }
+        /*public JsonResult<IEnumerable<ProjectInfo>> FetchInactiveProjectsAtLocation(int id)
+        {
+
+            ProjectInfo[] ListOfProjects = LocationBl.GetInactiveProjectsAtLocation(id);
+
+            var proj = from c in ListOfProjects
+                       select c;
+            return Json(proj);
+
+        }*/
         // POST api/<controller>
         public HttpResponseMessage Post(LocationInfo location)
         {

@@ -1,5 +1,5 @@
 ﻿//Define an angular module for our app
-var app = angular.module('myapp', []);
+var app = angular.module('myapp', ['ui.select','ngSanitize','ngRoute']);
 
 //Define Routing for app
 //Uri /AddNewOrder -> template add_order.html and Controller AddOrderController
@@ -51,7 +51,11 @@ app.config(['$routeProvider',
         when('/location-add', {
               templateUrl: 'UI/Templates/add-new-location.html',
               controller: 'LocationAddController'
-          }).
+        }).
+        when('/addProjectsToLocation', {
+            templateUrl: 'UI/Templates/add-new-project-to-location.html',
+            controller: 'ProjectsAtLocationController'
+        }).
         otherwise({
             redirectTo: '/layout'
         });
@@ -65,7 +69,6 @@ function ProjectController($scope, $http, $filter, $location) {
     $http({ method: 'GET', url: '/api/project' }).
      success(function (response, status, headers, config) {
          $scope.projects = response;
-         //alert(response[0].ProjectId);
      }).
      error(function (data, status, headers, config) {
          alert('error');
@@ -77,10 +80,14 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
 
 
       $scope.OpenClose = function (req) {
-          //alert('hit');
           var x;
-          var r = confirm("Are you sure you want to Close this project?");
-          if (r == true) {
+          if (req.IsActive) {
+              var r = confirm("Are you sure you want to Close this project?");
+          } else {
+              var r = confirm("Are you sure you want to Re-Open this project?");
+          }
+          
+         if (r == true) {
 
               req.isOpen = !req.IsActive;
 
@@ -93,7 +100,11 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
 
               }).success(function (result, status, headers) {
                   $scope.isBusy = false;
-                  alert("Project successfully Closed. However, you can still reactivate it.");
+                  if (req.isActive) {
+                      alert("Project successfully Closed. However, you can still reactivate it.");
+                  } else {
+                      alert("Project re-opened");
+                  }
                   req.isActive = false;
                   window.location.reload();
                   //$scope.reqToAddData = {};
@@ -110,8 +121,6 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
           }
 
       }
-
-
       $scope.isBusy = true;
       $scope.reverse = false;
       $scope.groupedItems = [];
@@ -153,13 +162,6 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
           else {
 
           }
-
-
-
-
-
-
-
       }
       $scope.range = function (start, end) {
           var ret = [];
@@ -258,11 +260,12 @@ app.controller('ProjectIndexController', ['$scope', '$http', '$filter', '$locati
 app.controller('ProjectAddController', ['$scope', '$http', '$filter', '$location', '$routeParams',
   function ProjectAddController($scope, $http, $filter, $location, $routeParams) {
 
-      $scope.projectLeads = [
-   { "ProjectLeadId": 1, "ProjectLeadName": "Anjani" },
-   { "ProjectLeadId": 2, "ProjectLeadName": "Neha" }
-
-      ]
+      $scope.projectLeads = {};
+      $http.get('api/user/FetchProjectLeads/0').success(function (result, status, headers) {
+          $scope.projectLeads = angular.copy(result);
+      }).error(function (result, status, header) {
+          alert("unable to fetch projectLeads");
+      });
       $scope.isBusy = false;
       $scope.addProject = function () {
           $scope.isBusy = true;
@@ -286,11 +289,12 @@ app.controller('ProjectAddController', ['$scope', '$http', '$filter', '$location
 app.controller('ProjectEditController', ['$scope', '$http', '$filter', '$location', '$routeParams',
   function ProjectEditController($scope, $http, $filter, $location, $routeParams) {
 
-      $scope.projectLeads = [
- { "ProjectLeadId": 1, "ProjectLeadName": "Anjani" },
- { "ProjectLeadId": 2, "ProjectLeadName": "Neha" }
-
-      ]
+      $scope.projectLeads = {};
+      $http.get('api/user/FetchProjectLeads/0').success(function (result, status, headers) {
+          $scope.projectLeads = angular.copy(result);
+      }).error(function (result, status, header) {
+          alert("unable to fetch projectLeads");
+      });
 
       $scope.detailsId = $routeParams.id;
       $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
@@ -312,20 +316,14 @@ app.controller('ProjectEditController', ['$scope', '$http', '$filter', '$locatio
       });
 
       //all data
-
-
-
-
-
-
-
-
-
-
       $scope.resetEditProjectForm = function () {
           $scope.projectToEditData = angular.copy($scope.backupProjectToEdit);
 
       }
+
+      $scope.back = function () {
+          $location.url('/projects');
+      };
 
       $scope.editProject = function () {
           $scope.isBusy = true;
@@ -365,11 +363,10 @@ app.controller('ProjectDetailsController', ['$scope', '$http', '$filter', '$loca
           $scope.projectDetailsData = angular.copy(result);
 
       }).error(function () {
-
-
       });
-
-
+      $scope.back = function() {
+          $location.url('/projects');
+      };
   }]);
 
 
@@ -662,38 +659,7 @@ function LocationController($scope, $http, $filter, $location) {
 app.controller('LocationIndexController', ['$scope', '$http', '$filter', '$location',
   function LocationIndexController($scope, $http, $filter, $location) {
 
-
-      $scope.OpenClose = function (req) {
-          var x;
-          var r = confirm("Are you sure you want to Close this location?");
-          if (r == true) {
-
-              req.isOpen = !req.IsActive;
-              $scope.urlForDelete = 'api/selectedLocation?id=' + req.LocationId + '&isOpen=' + req.isOpen;
-
-              $http({
-                  method: 'DELETE',
-                  url: $scope.urlForDelete,
-
-              }).success(function (result, status, headers) {
-                  $scope.isBusy = false;
-                  alert("Location successfully Closed. However, you can still reactivate it.");
-                  req.isActive = false;
-                  window.location.reload();
-                  //$scope.reqToAddData = {};
-
-              })
-              .error(function (result, status, headers) {
-                  $scope.isBusy = false;
-                  alert("error");
-              });
-
-          }
-          else {
-
-          }
-
-      }
+      alert("hit locationIndex Controller!");    
       $scope.isBusy = true;
       $scope.reverse = false;
       $scope.groupedItems = [];
@@ -831,7 +797,6 @@ app.controller('LocationIndexController', ['$scope', '$http', '$filter', '$locat
 
 app.controller('LocationDetailsController', ['$scope', '$http', '$filter', '$location', '$routeParams',
   function LocationDetailsController($scope, $http, $filter, $location, $routeParams) {
-
       $scope.detailsId = $routeParams.id;
       $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
       
@@ -937,11 +902,46 @@ app.controller('LocationDetailsController', ['$scope', '$http', '$filter', '$loc
           }
           return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
       };
+
+      $scope.OpenClose = function (req) {
+          var x;
+          if (req.IsActive == 1) {
+              var r = confirm("Are you sure you want to Close this project at this location?");
+          } else {
+              var r = confirm("Re-enable project at this location?");
+          }
+          if (r == true) {
+
+              req.isOpen = !req.IsActive;
+              $scope.urlForDelete = 'api/projatloc/DisableProjectAtLocation?id=' + req.ProjectLocationId + '&isOpen=' + req.isOpen;
+
+              $http({
+                  method: 'DELETE',
+                  url: $scope.urlForDelete,
+
+              }).success(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  
+                  req.isActive = false;
+                  window.location.reload();
+                  //$scope.reqToAddData = {};
+
+              })
+              .error(function (result, status, headers) {
+                  $scope.isBusy = false;
+                  alert("error");
+              });
+
+          }
+          else {
+              alert("some error !");
+          }
+
+      }
   
   }]);
 app.controller('LocationAddController', ['$scope', '$http', '$filter', '$location', '$routeParams',
   function LocationAddController($scope, $http, $filter, $location, $routeParams) {
-      alert("hit");
       $scope.isBusy = false;
       $scope.addLocation = function () {
           $scope.isBusy = true;
@@ -958,3 +958,60 @@ app.controller('LocationAddController', ['$scope', '$http', '$filter', '$locatio
           });
       }
   }]);
+
+app.controller('ProjectsAtLocationController', ['$scope', '$http', '$filter', '$location',
+function ProjectsAtLocationController($scope, $http, $filter, $location) {
+
+    $scope.location = {};
+    $scope.multiselect = {};
+    $http.get('api/location').success(function (result, status, headers) {
+        $scope.Locations = angular.copy(result);
+    }).error(function (result, status, header) {
+        alert("unable to fetch locations");
+    });
+
+    $scope.fetchProjects = function(Location){
+        $http.get('api/projatloc/fetchinactiveprojectsatlocation/'+ Location.LocationId).success(function (result, status, headers) {
+            $scope.Projects = angular.copy(result);
+        }).error(function (result, status, header) {
+            alert("unable to fetch Inactive projects");
+        });
+    }
+    $scope.AddProjects = function (Projects) {
+        angular.forEach(Projects, function (value, key) {
+            //alert(value.ProjectId);
+            //post goes here !
+        });
+    }
+}]);
+
+app.filter('propsFilter', function () {
+    return function (items, props) {
+        var out = [];
+
+        if (angular.isArray(items)) {
+            items.forEach(function (item) {
+                var itemMatches = false;
+
+                var keys = Object.keys(props);
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    var text = props[prop].toLowerCase();
+                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                        itemMatches = true;
+                        break;
+                    }
+                }
+
+                if (itemMatches) {
+                    out.push(item);
+                }
+            });
+        } else {
+            // Let the output be the input untouched
+            out = items;
+        }
+
+        return out;
+    }
+});

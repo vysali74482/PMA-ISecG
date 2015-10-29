@@ -1,10 +1,53 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-	<meta charset="utf-8" />
-</head>
-<body>
+﻿<div class="progress progress-warning progress-small progress-stripped active" ng-show="isBusy">
+    <div class="bar" style="width: 100%;"></div>
+</div>
+<br />
+<div class="span12">
+    <h1> Add Project to location </h1>
+</div>
+<div class="span12">
+    <form class="form-horizontal" ng-submit="AddProjects(multiselect.selectedProjects)">
+        <div class="control-group">
+            <label class="control-label" for="form-field-1">Location</label>
+            <ui-select ng-model="location.selected"
+                       theme="bootstrap"
+                       ng-disabled="disabled"
+                       reset-search-input="false"
+                       ng-change="fetchProjects(location.selected)"
+                       style="width: 300px;">
+                <ui-select-match placeholder="Search...">{{$select.selected.LocationName}}</ui-select-match>
+                <ui-select-choices repeat="location in Locations | propsFilter: {LocationName: $select.search}">
+                    <div ng-bind-html="location.LocationName | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <label class="control-label" for="form-field-1">Projects</label>
+            <ui-select multiple ng-model="multiselect.selectedProjects" theme="bootstrap" ng-disabled="disabled" style="width: 800px;">
+                <ui-select-match placeholder="Search Project...">{{$item.ProjectName}}</ui-select-match>
+                <ui-select-choices group-by="someGroupFn" repeat="project in Projects | propsFilter: {ProjectName: $select.search}">
+                    <div ng-bind-html="project.ProjectName | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>            
+        
+        </div>
+        <div class="hr"></div>
+        <div class="form-actions">
+            <button class="btn btn-info" type="submit">
+                <i class="icon-ok bigger-110"></i>
+                Add Projects
+            </button>
+            &nbsp; &nbsp; &nbsp;
+            <button class="btn" type="reset">
+                <i class="icon-undo bigger-110"></i>
+                Reset
+            </button>
+        </div>
+        
+    </form>
+</div>
+<br />
 
-</body>
-</html>
+
+
+
+
+

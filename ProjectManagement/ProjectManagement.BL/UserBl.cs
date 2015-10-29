@@ -62,5 +62,11 @@ namespace ProjectManagement.BL
             }
 
         }
+        public static UserInfo[] GetAllProjectLeads()
+        {
+            UserInfo[] userInfo = UserDal.GetAllProjectLeads();
+            return userInfo;
+
+        }
     }
 }

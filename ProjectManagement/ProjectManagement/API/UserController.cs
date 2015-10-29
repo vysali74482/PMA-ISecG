@@ -39,6 +39,16 @@ namespace ProjectManagement.API
             }
 
         }
-        
+        [HttpGet]
+        public JsonResult<IEnumerable<UserInfo>> FetchProjectLeads(int id)
+        {
+
+            UserInfo[] ListOfUsers = UserBl.GetAllProjectLeads();
+            //testing push
+            var users = from c in ListOfUsers
+                        select c;
+            return Json(users);
+
+        }
     }
 }

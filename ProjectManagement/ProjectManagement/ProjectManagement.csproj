@@ -200,6 +200,11 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\templatemo_415_dashboard\css\acute.select.css" />
     <Content Include="Content\templatemo_415_dashboard\css\angular-datepicker.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -230,6 +235,7 @@
     <Content Include="Content\templatemo_415_dashboard\jqvmap\maps\jquery.vmap.russia.js" />
     <Content Include="Content\templatemo_415_dashboard\jqvmap\maps\jquery.vmap.usa.js" />
     <Content Include="Content\templatemo_415_dashboard\jqvmap\maps\jquery.vmap.world.js" />
+    <Content Include="Content\templatemo_415_dashboard\js\acute.select.js" />
     <Content Include="Content\templatemo_415_dashboard\js\bootstrap.min.js" />
     <Content Include="Content\templatemo_415_dashboard\js\Chart.min.js" />
     <Content Include="Content\templatemo_415_dashboard\js\jquery.min.js" />
@@ -1048,6 +1054,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.1.debug.js" />
+    <Content Include="Scripts\knockout-2.2.1.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -1103,6 +1111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\" />
     <Folder Include="Views\SelectedUser\" />
   </ItemGroup>
   <ItemGroup>

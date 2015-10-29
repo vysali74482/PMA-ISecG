@@ -22,5 +22,37 @@ namespace ProjectManagement.API
             return Json(proj);
 
         }
+        [HttpGet]
+        public JsonResult<IEnumerable<ProjectLocationInfo>> FetchProjectsAtLocation(int id)
+        {
+
+            ProjectLocationInfo[] ListOfProjects = ProjectLocationBl.GetProjectsAtLocation(id);
+
+            var proj = from c in ListOfProjects
+                       select c;
+            return Json(proj);
+
+        }
+        [HttpGet]
+        public JsonResult<IEnumerable<ProjectInfo>> FetchInactiveProjectsAtLocation(int id)
+        {
+
+            ProjectInfo[] ListOfProjects = ProjectLocationBl.GetInactiveProjectsAtLocation(id);
+
+            var proj = from c in ListOfProjects
+                       select c;
+            return Json(proj);
+
+        }
+        [HttpDelete]
+        public HttpResponseMessage DisableProjectAtLocation(int id, bool isOpen)
+        {
+            return ProjectLocationBl.SoftDeleteProjectAtLocation(id, isOpen);
+        }
+
+        public HttpResponseMessage Post(int ProjectId,int LocationId)
+        {
+            return ProjectLocationBl.AddProjectToLocation(ProjectId,LocationId);            
+        }
     }
 }

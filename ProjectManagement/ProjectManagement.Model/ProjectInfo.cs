@@ -13,10 +13,10 @@ namespace ProjectManagement.Model
         public string ProjectName { get; set; }
 
         public string ProjectCode { get; set;  }
-    
-        public string ProjectLead { get; set; }
 
-        public string ProjectLeadId { get; set; }
+        public int ProjectLeadId { get; set; }
+
+        public string ProjectLeadName { get; set; }
 
         public Boolean IsActive { get; set; }
 
@@ -24,7 +24,8 @@ namespace ProjectManagement.Model
 
         public DateTime ChangedDate { get; set; }
 
-        public string ChangedBy { get; set; }
+        public int ChangedById { get; set; }
+        public string ChangedByName { get; set; }
 
         public string OpenClose { get; set; }
     }

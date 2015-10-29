@@ -12,23 +12,24 @@ namespace ProjectManagement.BL
 {
     public class ProjectLocationBl
     {
-        public static ProjectLocationInfo[] GetProjectsAtLocation(int LocationId)
+        public static ProjectLocationInfo[] GetProjectsAtLocation(int id)
         {
-            ProjectLocationInfo[] projectLocationInfo = ProjectLocationDal.GetProjectsAtLocation(LocationId);
+            ProjectLocationInfo[] projectLocationInfo = ProjectLocationDal.GetProjectsAtLocation(id);
             return projectLocationInfo;
 
         }
 
-        /*public static int AddNewProjectAtLocation(ProjectInfo project,int LocationId)
+        public static ProjectInfo[] GetInactiveProjectsAtLocation(int id)
         {
-            return ProjectLocationDal.AddNewProjectAtLocation(project,LocationId);
-        }
+            ProjectInfo[] projectInfo = ProjectLocationDal.GetInactiveProjectsAtLocation(id);
+            return projectInfo;
 
-        public static HttpResponseMessage SoftDeleteProjectAtLocation(int ProjectLocationId, bool isOpen)
+        }
+        public static HttpResponseMessage SoftDeleteProjectAtLocation(int  ProjectLocationId, bool isOpen)
         {
             try
             {
-                int val = ProjectLocationDal.SoftDeleteProject(ProjectLocationId, isOpen);
+                int val = ProjectLocationDal.SoftDeleteProjectAtLocation(ProjectLocationId, isOpen);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -37,7 +38,19 @@ namespace ProjectManagement.BL
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-        }*/
-        
+        }
+
+        public static HttpResponseMessage AddProjectToLocation(int ProjectId, int LocationId) {
+            try
+            {
+                int val = ProjectLocationDal.AddProjectAtLocation(ProjectId, LocationId);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EXCEPTION: " + ex);
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+        }
     }
 }

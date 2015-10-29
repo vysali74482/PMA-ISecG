@@ -27,8 +27,8 @@
                                 <select ng-model="projectToAddData.ProjectLeadId">
                                     <option ng-selected="{{item.ProjectLeadId == projectToAddData.ProjectLeadId}}"
                                             ng-repeat="item in projectLeads"
-                                            value="{{item.ProjectLeadId}}">
-                                        {{item.ProjectLeadName}}
+                                            value="{{item.UserId}}">
+                                        {{item.UserName}}
                                     </option>
                                 </select>
                             </div>

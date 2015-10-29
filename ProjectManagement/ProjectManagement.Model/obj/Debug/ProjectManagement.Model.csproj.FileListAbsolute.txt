@@ -16,8 +16,8 @@ C:\Users\svysali\Desktop\PMA-IsecG\ProjectManagement\ProjectManagement.Model\bin
 C:\Users\svysali\Desktop\PMA-IsecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.pdb
 C:\Users\svysali\Desktop\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.dll
 C:\Users\svysali\Desktop\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.pdb
-C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.dll
-C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.pdb
-C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.dll
-C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.pdb
-C:\Users\svysali\Desktop\ghci\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.csprojResolveAssemblyReference.cache
+C:\Users\svysali\Documents\software\PMA-IsecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.dll
+C:\Users\svysali\Documents\software\PMA-IsecG\ProjectManagement\ProjectManagement.Model\bin\Debug\ProjectManagement.Model.pdb
+C:\Users\svysali\Documents\software\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.csprojResolveAssemblyReference.cache
+C:\Users\svysali\Documents\software\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.dll
+C:\Users\svysali\Documents\software\PMA-IsecG\ProjectManagement\ProjectManagement.Model\obj\Debug\ProjectManagement.Model.pdb
