@@ -179,6 +179,8 @@
     <Compile Include="API\FundController.cs" />
     <Compile Include="API\ProjAtLocController.cs" />
     <Compile Include="API\ProjectController.cs" />
+    <Compile Include="API\ProjectReportsController.cs" />
+    <Compile Include="API\ProjectsFundsAtLocationReportController.cs" />
     <Compile Include="API\RegisterController.cs" />
     <Compile Include="API\SelectedFundController.cs" />
     <Compile Include="API\SelectedLocationController.cs" />
@@ -290,6 +292,7 @@
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\highstock.src.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -1073,6 +1076,7 @@
     <Content Include="UI\js\controllers.js" />
     <Content Include="UI\js\directives.js" />
     <Content Include="UI\js\flash.service.js" />
+    <Content Include="UI\js\routingConfig.js" />
     <Content Include="UI\js\services.js" />
     <Content Include="UI\js\user.service.js" />
     <Content Include="UI\Templates\add-new-beneficiary.html" />
@@ -1096,6 +1100,8 @@
     <Content Include="UI\Templates\home.view.html" />
     <Content Include="UI\Templates\locations.html" />
     <Content Include="UI\Templates\login.view.html" />
+    <Content Include="UI\Templates\projects-locations-reports.html" />
+    <Content Include="UI\Templates\projects-reports.html" />
     <Content Include="UI\Templates\projects.html" />
     <Content Include="UI\Templates\register.view.html" />
     <Content Include="UI\Templates\users.html" />

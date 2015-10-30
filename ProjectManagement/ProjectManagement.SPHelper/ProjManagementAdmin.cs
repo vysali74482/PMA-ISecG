@@ -30,7 +30,7 @@ namespace ProjectManagement.SPHelper
         private const string PROC_GETLOCATIONBYID = "dbo.GetLocationById";
         private const string PROC_SOFTDELETELOCATION = "dbo.SoftDeleteLocation";
         private const string PROC_UPDATELOCATION = "dbo.UpdateLocation";
-
+        private const string PROC_GETREPORTPROJECTSFUNDS = "dbo.GetReportProjectsFunds";
         #endregion
 
         #region SqlParameter Constants
@@ -1244,6 +1244,40 @@ namespace ProjectManagement.SPHelper
             sqlParms[4].Value = bene.LocationId;
             sqlParms[5].Value = "sanyam";
             sqlParms[6].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
+        #region Reports
+
+
+        public static SqlDataReader GetReportProjectsFunds(out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetReportProjectsFunds();
+            dr = ExecuteReader(PROC_GETREPORTPROJECTSFUNDS, parms, out retValue);
+
+            return dr;
+        }
+        private static SqlParameter[] GetReportProjectsFunds()
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETREPORTPROJECTSFUNDS);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETREPORTPROJECTSFUNDS, sqlParms);
+            }
+
+            //Assigning values to parameter
+
+            sqlParms[0].Value = -1;
             return sqlParms;
         }
         #endregion

@@ -29,6 +29,8 @@
 	.controller('BeneficiaryAddController', BeneficiaryAddController)
 	.controller('BeneficiaryEditController', BeneficiaryEditController)
 	.controller('BeneficiaryDetailsController', BeneficiaryDetailsController)
+	.controller('ProjectsReportController', ProjectsReportController)
+	.controller('ProjectsLocationFundsReportController', ProjectsLocationFundsReportController)
     .filter('propsFilter', propsFilter);
 
     config.$inject = ['$routeProvider'];
@@ -114,8 +116,16 @@
         when('/beneficiary-details/:id', {
             templateUrl: 'UI/Templates/details-beneficiary.html',
             controller: 'BeneficiaryDetailsController',
-        })
-        .when('/login', {
+        }).
+		when('/projects-report', {
+		    templateUrl: 'UI/Templates/projects-reports.html',
+		    controller: 'ProjectsReportController'
+		}).
+        when('/projects-location-funds-report', {
+            templateUrl: 'UI/Templates/projects-locations-reports.html',
+            controller: 'ProjectsLocationFundsReportController'
+        }).
+        when('/login', {
             controller: 'LoginController',
             templateUrl: 'UI/Templates/login.view.html',
             controllerAs: 'vm'
@@ -1724,6 +1734,158 @@
         }).error(function () {
 
         });
+    }
+
+    ProjectsReportController.$inject = ['$scope', '$http', '$filter', '$location'];
+    function ProjectsReportController($scope, $http, $filter, $location) {
+
+        $http.get('api/projectreports').success(function (response, status, headers) {
+            // this callback will be called asynchronously
+            // when the response is available
+            //alert("success");
+            $scope.chartSeries = response;
+
+
+            $(function () {
+                $('#container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Projects Funds'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+
+                    series: [{
+                        name: 'Projects',
+                        colorByPoint: true,
+                        data: $scope.chartSeries
+                    }]
+                });
+            });
+
+
+
+        }).error(function () {
+            $scope.isBusy = false;
+            //alert("this is an error");
+            $location.path('/home');
+
+        });
+
+    }
+    ProjectsLocationFundsReportController.$inject = ['$scope', '$http', '$filter', '$location'];
+    function ProjectsLocationFundsReportController($scope, $http, $filter, $location) {
+
+        $http.get('api/ProjectsFundsAtLocationReport').success(function (response, status, headers) {
+            // this callback will be called asynchronously
+            // when the response is available
+            //alert("success");
+            $scope.chartSeries = response;
+            $scope.flag = true;
+
+            $scope.getReport();
+
+        }).error(function () {
+            $scope.isBusy = false;
+            //alert("this is an error");
+            $location.path('/home');
+
+        });
+
+        $scope.getReport = function () {
+
+            if ($scope.flag == true) {
+                $scope.flag = false;
+                $(function () {
+                    $('#container').highcharts({
+                        chart: {
+                            type: 'bar'
+                        },
+                        title: {
+                            text: 'Funds Allocated for Projects At Locations'
+                        },
+                        xAxis: {
+                            categories: $scope.chartSeries.categories
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Funds Allocated for Projects By Location'
+                            }
+                        },
+                        legend: {
+                            reversed: true
+                        },
+                        plotOptions: {
+                            series: {
+                                stacking: 'normal'
+                            }
+                        },
+                        series: $scope.chartSeries.series
+                    });
+
+                });
+
+            }
+            else if ($scope.flag == false) {
+                $(function () {
+                    $('#container').highcharts({
+                        title: {
+                            text: 'Funds Instances',
+                            x: -20 //center
+                        },
+                        subtitle: {
+                            text: 'Funds Allocated for Projects By Location',
+                            x: -20
+                        },
+                        xAxis: {
+                            categories: $scope.chartSeries.categories
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Temperature (°C)'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        tooltip: {
+                            valueSuffix: '°C'
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            borderWidth: 0
+                        },
+                        series: $scope.chartSeries.series
+                    });
+
+                });
+                $scope.flag = true;
+            }
+        }
     }
 
     function propsFilter() {

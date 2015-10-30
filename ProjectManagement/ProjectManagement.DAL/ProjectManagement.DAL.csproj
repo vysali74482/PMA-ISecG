@@ -49,6 +49,7 @@
     <Compile Include="LocationDal.cs" />
     <Compile Include="ProjectDal.cs" />
     <Compile Include="ProjectLocationDal.cs" />
+    <Compile Include="ReportDal.cs" />
     <Compile Include="UserDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

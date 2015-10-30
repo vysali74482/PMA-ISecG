@@ -44,11 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountInfo.cs" />
+    <Compile Include="BarGraphSeriesInfo.cs" />
     <Compile Include="BeneficiaryProjLocInfo.cs" />
     <Compile Include="FundInfo.cs" />
+    <Compile Include="HighChartsBarGraphInfo.cs" />
+    <Compile Include="MyInt.cs" />
+    <Compile Include="PieUtility.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectLeadInfo.cs" />
     <Compile Include="ProjectLocationInfo.cs" />
+    <Compile Include="ReportData.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="LocationInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
