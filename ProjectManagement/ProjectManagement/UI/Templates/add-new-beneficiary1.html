@@ -1,0 +1,69 @@
+﻿<div class="page-header position-relative">
+    <div class="templatemo-panels">
+        <div class="row">
+
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <form class="form-horizontal" ng-submit="addBeneficiary()">
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-1">Benificiary Name</label>
+
+                                <div class="controls">
+                                    <input type="text" id="form-field-1" name="Name" ng-model="beneficiaryToAddData.BeneficiaryName" required />
+
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="form-field-4">Beneficiary Address</label>
+
+                                <div class="controls">
+                                    <input type="text" id="form-field-4" name="BeneficiaryAddress" ng-model="beneficiaryToAddData.BeneficiaryAddress" required />
+
+                                </div>
+                            </div>
+                            <label>Select Location</label>
+                            <select name="LocationId" ng-model="beneficiaryToAddData.LocationId" ng-change="fetchProjects(beneficiaryToAddData.LocationId)">
+                                <option data-ng-repeat="l in Locations" value="{{l.LocationId}}">{{l.LocationName}}</option>
+                            </select>
+                            <div class="span12">
+                                <label>Select Project</label>
+                                <select name="ProjectId" ng-model="beneficiaryToAddData.ProjectId">
+                                    <option data-ng-repeat="p in Projects" value="{{p.ProjectId}}">{{p.ProjectName}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-actions">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    Add Beneficiary
+                                </button>
+
+
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="icon-bar bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+
+
+
+
+                            <div class="hr"></div>
+
+                        </form>
+
+                        <div class="progress progress-warning progress-small progress-stripped active" ng-show="isBusy">
+
+                            <div class="bar" style="width: 100%;"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

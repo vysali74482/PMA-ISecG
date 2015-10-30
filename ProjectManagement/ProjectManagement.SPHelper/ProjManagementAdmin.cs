@@ -76,7 +76,14 @@ namespace ProjectManagement.SPHelper
         private const string PARAM_FUND_ID = "@fund_id";
         private const string PARAM_FUND_AMOUNT = "@fund_amount";
         private const string PARAM_FUND_IS_ACTIVE = "@is_active";
-     
+
+        private const string PARAM_BENEFICIARY_ID = "@beneficiary_id";
+        private const string PARAM_BENEFICIARY_NAME = "@beneficiary_name";
+        private const string PARAM_BENEFICIARY_ADDRESS = "@beneficiary_address";
+        private const string PARAM_BENEFICIARY_CHANGEDBY = "@changed_by";
+        private const string PARAM_BENEFICIARY_CREATEDDATE = "@created_date";
+        private const string PARAM_BENEFICIARY_CHANGEDDATE = "@changed_date";
+        private const string PARAM_BENEFICIARY_IS_ACTIVE = "@is_active";
 
         #endregion
 
@@ -949,6 +956,39 @@ namespace ProjectManagement.SPHelper
             return sqlParms;
         }
 
+        private const string PROC_GETACTIVEPROJECTSATLOCATION = "dbo.GetActiveProjectsAtLocation";
+
+        public static SqlDataReader GetActiveProjectsAtLocation(int LocationId, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetActiveProjectsAtLocationParams(LocationId);
+            dr = ExecuteReader(PROC_GETACTIVEPROJECTSATLOCATION, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetActiveProjectsAtLocationParams(int locationId)
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETACTIVEPROJECTSATLOCATION);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_LOCATION_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETACTIVEPROJECTSATLOCATION, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = locationId;
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+
         private const string PROC_SOFTDELETEPROJECTATLOC = "dbo.DeleteProjectLocation";
         private const string PARAM_PROJECT_LOCATION_ID = "@project_location_id";
         public static int SoftDeleteProjectAtLocation(int ProjectLocationId, bool isOpen, out int retValue)
@@ -1016,6 +1056,194 @@ namespace ProjectManagement.SPHelper
             sqlParms[1].Value = ProjLoc.ProjectId;
             sqlParms[2].Value = ProjLoc.LocationId;
             sqlParms[3].Value = "vysali";
+            return sqlParms;
+        }
+        #endregion
+        #region BeneficiaryProjectLocation
+        private const string PROC_GETBENEFICIARYATPROJECTLOCATION = "dbo.GetBeneficiaryAtProjectLocation";
+
+        public static SqlDataReader GetBeneficiaryAtProjectLocation(int BeneficiaryId, out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetBeneficiaryAtProjectLocationParams(BeneficiaryId);
+            dr = ExecuteReader(PROC_GETBENEFICIARYATPROJECTLOCATION, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetBeneficiaryAtProjectLocationParams(int BeneficiaryId)
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETBENEFICIARYATPROJECTLOCATION);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_BENEFICIARY_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[1].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETBENEFICIARYATPROJECTLOCATION, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = BeneficiaryId;
+            sqlParms[1].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+
+        #region GetAllBeneficiaries
+        private const string PROC_GETALLBENEFICIARIES = "dbo.GetAllBeneficiaries";
+        private const string PROC_ADDNEWBENEFICIARY = "dbo.AddNewBeneficiary";
+        private const string PROC_SOFTDELETEBENEFICIARY = "dbo.SoftDeleteBeneficiary";
+        private const string PROC_UPDATEBENEFICIARY = "dbo.UpdateBeneficiary";
+
+
+        public static SqlDataReader GetAllBeneficiaries(out int retValue)
+        {
+            retValue = -1;
+            SqlDataReader dr = null;
+            SqlParameter[] parms = GetAllBeneficiariesParams();
+            dr = ExecuteReader(PROC_GETALLBENEFICIARIES, parms, out retValue);
+
+            return dr;
+        }
+
+        private static SqlParameter[] GetAllBeneficiariesParams()
+        {
+            SqlParameter[] sqlParms = SQLHelper.GetCachedParameters(PROC_GETALLBENEFICIARIES);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_GETALLBENEFICIARIES, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+        #region AddNewBeneficiary
+        public static int AddNewBeneficiary(BeneficiaryProjLocInfo bene, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetAddBeneficiaryParams(bene);
+            return ExecuteNonQuery(PROC_ADDNEWBENEFICIARY, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetAddBeneficiaryParams(BeneficiaryProjLocInfo bene)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_ADDNEWBENEFICIARY);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int),
+                                new SqlParameter(PARAM_BENEFICIARY_NAME, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_BENEFICIARY_ADDRESS, SqlDbType.NVarChar, 100),
+                               new SqlParameter(PARAM_BENEFICIARY_CHANGEDBY, SqlDbType.NVarChar, 50),
+                               new SqlParameter(PARAM_PROJECT_ID, SqlDbType.Int),
+                               new SqlParameter(PARAM_LOCATION_ID, SqlDbType.Int)
+
+                            };
+
+                sqlParms[0].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_ADDNEWBENEFICIARY, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = -1;
+            sqlParms[1].Value = bene.BeneficiaryName;
+            sqlParms[2].Value = bene.BeneficiaryAddress;
+            sqlParms[3].Value = "sanyam";
+            sqlParms[4].Value = bene.ProjectId;
+            sqlParms[5].Value = bene.LocationId;
+
+            return sqlParms;
+        }
+        #endregion
+        #region SoftDeleteBeneficiary
+
+        public static int SoftDeleteBeneficiary(int beneficiaryId, bool isOpen, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetSoftDeleteBeneficiaryParams(beneficiaryId, isOpen);
+            return ExecuteNonQuery(PROC_SOFTDELETEBENEFICIARY, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetSoftDeleteBeneficiaryParams(int beneficiaryId, bool isOpen)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_SOFTDELETEBENEFICIARY);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_BENEFICIARY_ID, SqlDbType.Int),
+                                new SqlParameter(PARAM_BENEFICIARY_IS_ACTIVE,SqlDbType.Bit),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+                            };
+
+                sqlParms[2].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_SOFTDELETEBENEFICIARY, sqlParms);
+            }
+
+            //Assigning values to parameter
+
+            sqlParms[0].Value = beneficiaryId;
+            sqlParms[1].Value = Convert.ToByte(isOpen);
+            sqlParms[2].Value = -1;
+            return sqlParms;
+        }
+        #endregion
+        #region UpdateBeneficiaries
+
+        public static int UpdateBeneficiary(BeneficiaryProjLocInfo bene, out int retValue)
+        {
+            retValue = -1;
+            SqlParameter[] parms = GetUpdateBeneficiaryParams(bene);
+            return ExecuteNonQuery(PROC_UPDATEBENEFICIARY, parms, out retValue);
+        }
+
+        private static SqlParameter[] GetUpdateBeneficiaryParams(BeneficiaryProjLocInfo bene)
+        {
+            SqlParameter[] sqlParms = new SqlParameter[100];
+            sqlParms = SQLHelper.GetCachedParameters(PROC_UPDATEBENEFICIARY);
+            if (sqlParms == null)
+            {
+                sqlParms = new SqlParameter[]
+                            {
+                                new SqlParameter(PARAM_BENEFICIARY_ID,SqlDbType.Int),
+                                new SqlParameter(PARAM_BENEFICIARY_NAME, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_BENEFICIARY_ADDRESS, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_PROJECT_ID, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_LOCATION_ID, SqlDbType.NVarChar, 100),
+
+                                new SqlParameter(PARAM_CHANGEDBY, SqlDbType.NVarChar, 100),
+                                new SqlParameter(PARAM_RETURN, SqlDbType.Int)
+
+                            };
+
+                sqlParms[6].Direction = ParameterDirection.ReturnValue;
+                SQLHelper.CacheParameters(PROC_UPDATEBENEFICIARY, sqlParms);
+            }
+
+            //Assigning values to parameter
+            sqlParms[0].Value = bene.BeneficiaryId;
+            sqlParms[1].Value = bene.BeneficiaryName;
+            sqlParms[2].Value = bene.BeneficiaryAddress;
+            sqlParms[3].Value = bene.ProjectId;
+            sqlParms[4].Value = bene.LocationId;
+            sqlParms[5].Value = "sanyam";
+            sqlParms[6].Value = -1;
             return sqlParms;
         }
         #endregion

@@ -103,6 +103,46 @@ namespace ProjectManagement.DAL
             return allInfo;
         }
 
+        public static ProjectInfo[] GetActiveProjectsAtLocation(int LocationId)
+        {
+            ArrayList al = new ArrayList();
+            int retValue = -1;
+            //Generated Code for query : dbo.GetAllVendors
+            using (SqlDataReader dr = ProjManagementAdmin.GetActiveProjectsAtLocation(LocationId, out retValue)) //Initialize and retrieve code for Datareader goes here
+            {
+
+                while (dr.Read())
+                {
+                    ProjectInfo project = new ProjectInfo();
+
+                    project.ProjectId = Convert.ToInt32(dr["project_id"]);
+                    project.ProjectName = dr["project_name"].ToString();
+                    project.ProjectCode = dr["project_code"].ToString();
+                    project.ProjectLeadId = Convert.ToInt32(dr["project_lead_id"]);
+                    project.ProjectLeadName = dr["project_lead_name"].ToString();
+                    project.IsActive = Convert.ToBoolean(dr["is_active"]);
+                    project.CreatedDate = Convert.ToDateTime(dr["created_date"]);
+                    project.ChangedDate = Convert.ToDateTime(dr["changed_date"]);
+                    project.ChangedByName = dr["changed_by"].ToString();
+
+                    if (project.IsActive == true)
+                    {
+                        project.OpenClose = "Close";
+                    }
+                    else
+                    {
+                        project.OpenClose = "Open";
+                    }
+                    al.Add(project);
+                }
+                //dr.Close();
+            }
+
+            ProjectInfo[] allInfo = new ProjectInfo[al.Count];
+            al.CopyTo(allInfo);
+            return allInfo;
+        }
+
         public static int AddProjectAtLocation(ProjectLocationInfo ProjLoc)
         {
             int retValue = -1;

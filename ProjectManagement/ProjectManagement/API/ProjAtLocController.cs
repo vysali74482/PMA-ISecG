@@ -44,6 +44,18 @@ namespace ProjectManagement.API
             return Json(proj);
 
         }
+
+        [HttpGet]
+        public JsonResult<IEnumerable<ProjectInfo>> FetchActiveProjectsAtLocation(int id)
+        {
+
+            ProjectInfo[] ListOfProjects = ProjectLocationBl.GetActiveProjectsAtLocation(id);
+
+            var proj = from c in ListOfProjects
+                       select c;
+            return Json(proj);
+
+        }
         [HttpDelete]
         public HttpResponseMessage DisableProjectAtLocation(int id, bool isOpen)
         {

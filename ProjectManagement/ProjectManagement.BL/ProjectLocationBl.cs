@@ -25,6 +25,13 @@ namespace ProjectManagement.BL
             return projectInfo;
 
         }
+
+        public static ProjectInfo[] GetActiveProjectsAtLocation(int id)
+        {
+            ProjectInfo[] projectInfo = ProjectLocationDal.GetActiveProjectsAtLocation(id);
+            return projectInfo;
+
+        }
         public static HttpResponseMessage SoftDeleteProjectAtLocation(int  ProjectLocationId, bool isOpen)
         {
             try

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticateBL.cs" />
+    <Compile Include="BeneficiaryProjLocBl.cs" />
     <Compile Include="FundBl.cs" />
     <Compile Include="ProjectBl.cs" />
     <Compile Include="LocationBl.cs" />
