@@ -223,12 +223,14 @@
 
     ProjectController.$inject = ['$scope', '$http', '$filter', '$location'];
     function ProjectController($scope, $http, $filter, $location) {
-
+        ShowLoading();
         $http({ method: 'GET', url: '/api/project' }).
 		success(function (response, status, headers, config) {
+		    HideLoading();
 		    $scope.projects = response;
 		}).error(function (data, status, headers, config) {
-		    alert('error');
+		    HideLoading();
+		    bootbox.alert('error');
 		});
     };
 
@@ -248,16 +250,19 @@
 
                 $scope.urlForDelete = 'api/selectedProject?id=' + req.ProjectId + '&isOpen=' + req.isOpen;
 
+                ShowLoading();
+
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
+                    HideLoading();
                     if (req.isActive) {
-                        alert("Project successfully Closed. However, you can still reactivate it.");
+                        albootbox.alertert("Project successfully Closed. However, you can still reactivate it.");
                     } else {
-                        alert("Project re-opened");
+                        bootbox.alert("Project re-opened");
                     }
                     req.isActive = false;
                     window.location.reload();
@@ -266,7 +271,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -295,13 +301,16 @@
             if (r == true) {
                 $scope.urlForDelete = 'api/SelectedProject?id=' + project.ProjectId;
 
+                ShowLoading();
+
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("Project successfully deleted. However, you can still reactivate it.");
+                    HideLoading();
+                    bootbox.alert("Project successfully deleted. However, you can still reactivate it.");
                     project.isActive = false;
                     $location.path('/projects');
                     //$scope.reqToAddData = {};
@@ -309,7 +318,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -342,7 +352,7 @@
             $scope.currentPage = this.n;
         };
 
-
+        
         $http.get('api/project').success(function (result, status, headers) {
             // this callback will be called asynchronously
             // when the response is available
@@ -417,23 +427,26 @@
         $http.get('api/user/FetchProjectLeads/0').success(function (result, status, headers) {
             $scope.projectLeads = angular.copy(result);
         }).error(function (result, status, header) {
-            alert("unable to fetch projectLeads");
+            bootbox.alert("unable to fetch projectLeads");
         });
         $scope.isBusy = false;
         $scope.addProject = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/project',
                 data: $scope.projectToAddData
             }).success(function (result, status, headers) {
-                alert("Project successfully added");
+                HideLoading();
+                bootbox.alert("Project successfully added");
                 $scope.projectToAddData = {};
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
 
@@ -446,7 +459,7 @@
         $http.get('api/user/FetchProjectLeads/0').success(function (result, status, headers) {
             $scope.projectLeads = angular.copy(result);
         }).error(function (result, status, header) {
-            alert("unable to fetch projectLeads");
+            bootbox.alert("unable to fetch projectLeads");
         });
 
         $scope.detailsId = $routeParams.id;
@@ -464,7 +477,7 @@
             $scope.backupProjectToEdit = angular.copy(result);
 
         }).error(function () {
-
+            bootbox.alert("error");
 
         });
 
@@ -480,20 +493,23 @@
 
         $scope.editProject = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/Selectedproject',
                 data: $scope.projectToEditData
             }).success(function (result, status, headers) {
                 $scope.isBusy = false;
-                alert("Project information successfully edited");
+                HideLoading();
+                bootbox.alert("Project information edited successfully.");
                 $location.path('/projects');
 
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
     }
@@ -536,14 +552,15 @@
 
                 $scope.urlForDelete = 'api/selectedUser?id=' + req.UserId + '&isOpen=' + req.isOpen;
 
-
+                ShowLoading();
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("User successfully Closed. However, you can still reactivate the user.");
+                    HideLoading();
+                    bootbox.alert("User successfully Closed. However, you can still reactivate the user.");
                     req.isActive = false;
                     window.location.reload();
                     //$scope.reqToAddData = {};
@@ -551,7 +568,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -582,13 +600,15 @@
             if (r == true) {
                 $scope.urlForDelete = 'api/SelectedUser?id=' + user.UserId;
 
+                ShowLoading();
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("User successfully deleted. However, you can still reactivate the user.");
+                    HideLoading();
+                    bootbox.alert("User successfully deleted. However, you can still reactivate the user.");
                     user.isActive = false;
                     $location.path('/users');
                     //$scope.reqToAddData = {};
@@ -596,7 +616,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -703,18 +724,22 @@
         $scope.isBusy = false;
         $scope.addUser = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/user',
                 data: $scope.userToAddData
             }).success(function (result, status, headers) {
-                alert("User successfully added");
+                $scope.isBusy = false;
+                HideLoading();
+                bootbox.alert("User successfully added");
                 $scope.userToAddData = {};
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
 
@@ -752,20 +777,23 @@
 
         $scope.editUser = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/Selecteduser',
                 data: $scope.userToEditData
             }).success(function (result, status, headers) {
                 $scope.isBusy = false;
-                alert("User information successfully edited");
+                HideLoading();
+                bootbox.alert("User information successfully edited");
                 $location.path('/users');
 
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
     }
@@ -802,14 +830,14 @@
              $scope.locations = response;
          }).
          error(function (data, status, headers, config) {
-             alert('error');
+             bootbox.alert('error');
          });
     }
 
     LocationIndexController.$inject = ['$scope', '$http', '$filter', '$location', '$routeParams'];
     function LocationIndexController($scope, $http, $filter, $location) {
 
-        alert("hit locationIndex Controller!");
+        //bootbox.alert("hit locationIndex Controller!");
         $scope.isBusy = true;
         $scope.reverse = false;
         $scope.groupedItems = [];
@@ -829,13 +857,16 @@
             if (r == true) {
                 $scope.urlForDelete = 'api/SelectedLocation?id=' + location.LocationId;
 
+                ShowLoading();
+
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("Location successfully deleted. However, you can still reactivate it.");
+                    HideLoading();
+                    bootbox.alert("Location successfully deleted. However, you can still reactivate it.");
                     location.isActive = false;
                     $location.path('/locations');
                     //$scope.reqToAddData = {};
@@ -843,7 +874,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -1064,12 +1096,15 @@
                 req.isOpen = !req.IsActive;
                 $scope.urlForDelete = 'api/projatloc/DisableProjectAtLocation?id=' + req.ProjectLocationId + '&isOpen=' + req.isOpen;
 
+                ShowLoading();
+
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
+                    HideLoading();
 
                     req.isActive = false;
                     window.location.reload();
@@ -1078,12 +1113,13 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
             else {
-                alert("some error !");
+                bootbox.alert("some error !");
             }
 
         }
@@ -1094,16 +1130,20 @@
         $scope.isBusy = false;
         $scope.addLocation = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/location',
                 data: $scope.locationToAddData
             }).success(function (result, status, headers) {
-                alert("Location successfully added");
+                $scope.isBusy = false;
+                HideLoading();
+                bootbox.alert("Location successfully added");
                 $scope.locationToAddData = {};
             }).error(function (result, status, headers) {
                 $scope.isBusy = false;
-                alert("error");
+                HideLoading();
+                bootbox.alert("error");
             });
         }
     }
@@ -1116,7 +1156,7 @@
         $http.get('api/location').success(function (result, status, headers) {
             $scope.Locations = angular.copy(result);
         }).error(function (result, status, header) {
-            alert("unable to fetch locations");
+            bootbox.alert("unable to fetch locations");
         });
 
         $scope.fetchProjects = function (LocationId) {
@@ -1124,24 +1164,28 @@
             $http.get('api/projatloc/fetchinactiveprojectsatlocation/' + LocationId).success(function (result, status, headers) {
                 $scope.Projects = angular.copy(result);
             }).error(function (result, status, header) {
-                alert("unable to fetch Inactive projects");
+                bootbox.alert("unable to fetch Inactive projects");
             });
         }
 
         $scope.AddProject = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/projatloc',
                 data: $scope.ToAddData
             }).success(function (result, status, headers) {
-                alert("Project successfully added for Location");
+                $scope.isBusy = false;
+                HideLoading();
+                bootbox.alert("Project successfully added for Location");
                 $scope.projectToAddData = {};
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
     }
@@ -1156,7 +1200,7 @@
                 req.isOpen = !req.IsActive;
 
                 $scope.urlForDelete = 'api/SelectedFund?id=' + req.FundId + '&isOpen=' + req.isOpen;
-
+                ShowLoading();
 
                 $http({
                     method: 'DELETE',
@@ -1164,7 +1208,8 @@
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("Transaction successfully Deleted.");
+                    HideLoading();
+                    bootbox.alert("Transaction successfully Deleted.");
                     req.isActive = false;
                     window.location.reload();
                     //$scope.reqToAddData = {};
@@ -1172,7 +1217,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -1202,14 +1248,15 @@
             var r = confirm("Are you sure you want to delete this transaction");
             if (r == true) {
                 $scope.urlForDelete = 'api/SelectedFund?id=' + fund.FundId;
-
+                ShowLoading();
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("Transaction successfully deleted.");
+                    HideLoading();
+                    bootbox.alert("Transaction successfully deleted.");
                     fund.isActive = false;
                     $location.path('/funds');
                     window.location.reload();
@@ -1218,7 +1265,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -1322,18 +1370,22 @@
         $scope.isBusy = false;
         $scope.addFund = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/fund',
                 data: $scope.fundToAddFund
             }).success(function (result, status, headers) {
-                alert("Transaction successfully added");
+                $scope.isBusy = false;
+                HideLoading();
+                bootbox.alert("Transaction successfully added");
                 $scope.fundToAddFund = {};
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
 
@@ -1367,20 +1419,23 @@
 
         $scope.editFund = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/SelectedFund',
                 data: $scope.fundToEditFund
             }).success(function (result, status, headers) {
                 $scope.isBusy = false;
-                alert("Fund information successfully edited");
+                HideLoading();
+                bootbox.alert("Fund information successfully edited");
                 $location.path('/funds');
 
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
     }
@@ -1417,7 +1472,7 @@
                 req.isOpen = !req.IsActive;
 
                 $scope.urlForDelete = 'api/BeneficiaryAtProjectLocation?id=' + req.BeneficiaryId + '&isOpen=' + req.isOpen;
-
+                ShowLoading();
 
                 $http({
                     method: 'DELETE',
@@ -1425,7 +1480,8 @@
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("Beneficiary successfully removed. However, you can still reactivate the beneficiary.");
+                    HideLoading();
+                    bootbox.alert("Beneficiary successfully removed. However, you can still reactivate the beneficiary.");
                     req.isActive = false;
                     window.location.reload();
                     //$scope.reqToAddData = {};
@@ -1433,7 +1489,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -1466,13 +1523,15 @@
                 beneficiary.isOpen = !beneficiary.IsActive;
 
                 $scope.urlForDelete = 'api/BeneficiaryAtProjectLocation?id=' + beneficiary.BeneficiaryId + '&isOpen=' + beneficiary.isOpen;
+                ShowLoading();
                 $http({
                     method: 'DELETE',
                     url: $scope.urlForDelete,
 
                 }).success(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("Beneficiary successfully removed. However, you can still reactivate the beneficiary.");
+                    HideLoading();
+                    bootbox.alert("Beneficiary successfully removed. However, you can still reactivate the beneficiary.");
                     user.isActive = false;
                     $location.path('/beneficiaries');
                     //$scope.reqToAddData = {};
@@ -1480,7 +1539,8 @@
                 })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
 
             }
@@ -1588,34 +1648,38 @@
         $http.get('api/location').success(function (result, status, headers) {
             $scope.Locations = angular.copy(result);
         }).error(function (result, status, header) {
-            alert("unable to fetch locations");
+            bootbox.alert("unable to fetch locations");
         });
 
         $scope.fetchProjects = function (LocationId) {
-            alert(LocationId);
+           // alert(LocationId);
             $http.get('api/projatloc/FetchActiveProjectsAtLocation/' + LocationId).success(function (result, status, headers) {
                 $scope.Projects = angular.copy(result);
-                alert(Projects);
+               // alert(Projects);
             }).error(function (result, status, header) {
-                alert("unable to fetch projects");
+                bootbox.alert("unable to fetch projects");
             });
 
         }
         $scope.isBusy = false;
         $scope.addBeneficiary = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/beneficiary',
                 data: $scope.beneficiaryToAddData
             }).success(function (result, status, headers) {
-                alert("Beneficiary successfully added");
+                $scope.isBusy = false;
+                HideLoading();
+                bootbox.alert("Beneficiary successfully added");
                 $scope.beneficiaryToAddData = {};
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
 
@@ -1625,7 +1689,7 @@
         $scope.detailsId = $routeParams.id;
         $scope.detailsId = $scope.detailsId.replace(':', ''); //FIX ERROR 
         $scope.getQueryForDetails = 'api/BeneficiaryAtProjectlocation?id=' + $scope.detailsId;
-        alert($scope.getQueryForDetails);
+       // alert($scope.getQueryForDetails);
 
         $scope.beneficiaryToEditData = {};
 
@@ -1634,7 +1698,7 @@
             // when the response is available
             //alert("success");
             $scope.beneficiaryToEditData = angular.copy(result);
-            alert($scope.beneficiaryToEditData[0].BeneficiaryName);
+           // alert($scope.beneficiaryToEditData[0].BeneficiaryName);
             $scope.backupBeneficiaryToEdit = angular.copy(result);
 
         }).error(function () {
@@ -1649,20 +1713,23 @@
 
         $scope.editBeneficiary = function () {
             $scope.isBusy = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/BeneficiaryAtProjectLocation',
                 data: $scope.beneficiaryToEditData
             }).success(function (result, status, headers) {
                 $scope.isBusy = false;
-                alert("Beneficiary information successfully edited");
+                HideLoading();
+                bootbox.alert("Beneficiary information successfully edited");
                 $location.path('/beneficiaries');
 
 
             })
                 .error(function (result, status, headers) {
                     $scope.isBusy = false;
-                    alert("error");
+                    HideLoading();
+                    bootbox.alert("error");
                 });
         }
     }
@@ -1681,10 +1748,10 @@
         $http.get($scope.getQueryForDetails).success(function (result, status, headers) {
             // this callback will be called asynchronously
             // when the response is available
-            alert("success");
-            alert(JSON.stringify(result));
+            //alert("success");
+            //alert(JSON.stringify(result));
             $scope.beneficiaryDetailsData = angular.copy(result);
-            alert(JSON.stringify($scope.beneficiaryDetailsData));
+           // alert(JSON.stringify($scope.beneficiaryDetailsData));
         }).error(function () {
 
         });
