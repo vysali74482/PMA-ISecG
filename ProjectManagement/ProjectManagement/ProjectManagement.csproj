@@ -212,6 +212,8 @@
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\images\loader.gif" />
+    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\templatemo_415_dashboard\css\acute.select.css" />
     <Content Include="Content\templatemo_415_dashboard\css\angular-datepicker.css" />
     <Content Include="Content\bootstrap.css" />
@@ -292,6 +294,7 @@
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\highstock.src.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />

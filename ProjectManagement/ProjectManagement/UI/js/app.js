@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', [])
         .config(config)
         .run(run)
     .controller('LoginController', LoginController)
@@ -161,108 +161,62 @@
         });
     }
 
-    LoginController.$inject = ['$location', 'AuthenticationService', 'FlashService', 'UserService', '$rootScope', '$http'];
-    function LoginController($location, AuthenticationService, FlashService, UserService, $rootScope, $http) {
+    LoginController.$inject = ['$location', '$rootScope', '$http'];
+    function LoginController($location, $rootScope, $http) {
         var vm = this;
         vm.login = login;
-        vm.user = null;
-
-        (function initController() {
-            // reset login status
-            AuthenticationService.ClearCredentials();
-        })();
+        // vm.user = $rootScope.globals.currentUser.username;
 
         function login() {
-            vm.dataLoading = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/authenticate',
                 data: vm
             }).success(function (result, status, headers) {
-                AuthenticationService.SetCredentials(vm.username, vm.password);
-                initUserController();
+                HideLoading();
                 $location.path('/home');
 
             }).error(function (result, status, headers) {
-                vm.dataLoading = false;
-                alert("Username or password is incorrect");
+                HideLoading();
+                bootbox.alert("Username or password is incorrect");
             });
-        }
-
-        function initUserController() {
-            loadCurrentUser();
-        }
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
         }
     }
 
-    RegisterController.$inject = ['UserService', '$location', '$rootScope', 'FlashService', '$http', 'AuthenticationService'];
-    function RegisterController(UserService, $location, $rootScope, FlashService, $http, AuthenticationService) {
+    RegisterController.$inject = ['$location', '$rootScope', '$http'];
+    function RegisterController($location, $rootScope, $http) {
         var vm = this;
-        vm.user = null;
+        //vm.user = $rootScope.globals.currentUser.username;
         vm.register = register;
 
-        (function initController() {
-            // reset login status
-            AuthenticationService.ClearCredentials();
-        })();
-
         function register() {
-            vm.dataLoading = true;
+            ShowLoading();
             $http({
                 method: 'POST',
                 url: 'api/register',
                 data: vm
             }).success(function (result, status, headers) {
-                if (result == '0')
-                    alert("Registration successful");
+                HideLoading();
+                if (result == '0') {
+                    bootbox.alert("Registration successful. Please login now.");
+                    $location.path('/login');
+                }
                 else if (result == '1')
-                    alert("UserName already exist");
+                    bootbox.alert("UserName already exist");
                 else
-                    alert("There is some error in registration. Please try again after sometime.");
-                AuthenticationService.SetCredentials(vm.username, vm.password);
-                initUserController();
-                $location.path('/login');
+                    bootbox.alert("There is some error in registration. Please try again after sometime.");
 
             }).error(function (result, status, headers) {
-                vm.dataLoading = false;
-                alert("There is some error in registration. Please try again after sometime.");
+                HideLoading();
+                bootbox.alert("There is some error in registration. Please try again after sometime.");
             });
-        }
-
-        function initUserController() {
-            loadCurrentUser();
-        }
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
         }
     }
 
-    HomeController.$inject = ['UserService', '$rootScope'];
-    function HomeController(UserService, $rootScope) {
+    HomeController.$inject = ['$rootScope'];
+    function HomeController($rootScope) {
         var vm = this;
-
-        vm.user = null;
-
-        initController();
-
-        function initController() {
-            loadCurrentUser();
-        }
-
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
-        }
     }
 
 
@@ -1917,6 +1871,16 @@
 
             return out;
         }
+    }
+
+    function ShowLoading() {
+        document.getElementById('modal').style.display = 'block';
+        document.getElementById('fade').style.display = 'block';
+    }
+
+    function HideLoading() {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('fade').style.display = 'none';
     }
 
 })();

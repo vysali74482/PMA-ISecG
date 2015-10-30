@@ -7,8 +7,13 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="Content\templatemo_415_dashboard/css/templatemo_main.css">
     <link href="Content/templatemo_415_dashboard/css/bootstrap.min.css" rel="stylesheet" />
+     <link href="Content/Site.css" rel="stylesheet" />
 </head>
 <body ng-app="app">
+     <div id="fade"></div>
+    <div id="modal">
+        <img id="loader" src="Content/images/loader.gif" />
+    </div>
     <div class="navbar navbar-inverse" role="navigation">
         <div class="navbar-header">
             <div class="logo">
@@ -35,24 +40,20 @@
     <script src="Content\templatemo_415_dashboard/js/Chart.min.js"></script>
     <script src="Content\templatemo_415_dashboard/js/templatemo_script.js"></script>
     <script src="Scripts/angular.js"></script>
-    <script src="Scripts/angular.min.js"></script>
+    
+    <!--<script src="Scripts/angular.min.js"></script>-->
     <script src="Scripts/angular-cookies.js"></script>
-    <script src="UI/js/app.js"></script>
+    
     <script src="Scripts/angular-route.js"></script>
-    <script src="UI/js/authentication.service.js"></script>
-    <script src="UI/js/flash.service.js"></script>
+    <script src="UI/js/app.js"></script>
     <script src="UI/js/directives.js"></script>
     <script src="UI/js/routingConfig.js"></script>
     <script src="UI/js/services.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-    <!-- Real user service that uses an api -->
-    <!-- <script src="//cdn.rawgit.com/cornflourblue/angular-registration-login-example/master/app-services/user.service.js"></script>-->
-    <!-- Fake user service for demo that uses local storage -->
-    <script src="//cdn.rawgit.com/cornflourblue/angular-registration-login-example/master/app-services/user.service.local-storage.js"></script>
-
-
+     <script src="Scripts/bootbox.min.js"></script>
+    
+    <script src="UI/js/flash.service.js"></script>
 
     <script type="text/javascript">
         $('#myTab a').click(function (e) {
